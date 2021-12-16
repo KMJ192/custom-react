@@ -1,5 +1,8 @@
 # 기능을 구현해보며 이해하는 React
 
+- vanila ts로 spa를 만들어보는 프로젝트
+- react의 기능을 구현해보며 라이브러리에 대한 이해도 향상
+
 ## Todo list
 1. virtual dom 구현
 2. router 구현
