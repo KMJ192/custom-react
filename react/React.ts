@@ -15,7 +15,7 @@ export interface customElement {
   childNode?: customElement[];
 }
 
-function React() {
+const React = (function () {
   const _this = {
     currStateKey: 0,
     states: [],
@@ -33,11 +33,12 @@ function React() {
       const element: HTMLElement = document.createElement(tagName);
       element.innerText = String(value);
 
-      if (props) {
-        for (const [key, value] of Object.entries(props)) {
-          (element as any)[key] = value;
-        }
-      }
+      // element에 option 적용 기능 필요
+      // if (props) {
+      //   for (const [key, value] of Object.entries(props)) {
+      //     (element as any)[key] = value;
+      //   }
+      // }
 
       if (event) {
         const { type, eventRun } = event;
@@ -54,11 +55,13 @@ function React() {
   const reactRenderer = debounceFrame(() => {
     const { root, component, virtualDom } = _this;
     if (root === null || component === null) return;
-    root.innerHTML = '';
 
     if (virtualDom === null) {
+      root.innerHTML = '';
       creatRealDom(root, component());
     } else {
+      // diffing 알고리즘 추가 필요, 휴리스틱알고리즘 1차 적용, fiber 알고리즘 2차 적용
+      root.innerHTML = '';
       creatRealDom(root, component());
     }
 
@@ -74,15 +77,15 @@ function React() {
     reactRenderer();
   }
 
-  function useState<T = undefined>(initState: T): [T, (newVal: T) => void] {
+  function useState<T>(initState: T): [T, (newVal: T) => void] {
     const { states, currStateKey } = _this;
 
     const state = states[currStateKey] || initState;
     const _currStateKey = currStateKey;
 
     const setState = (newState: T) => {
-      if (newState === state) return;
       // map set과 같은 원시타입은 비교하지 걸러내지 못하므로 로직이 추가로 필요함...
+      if (newState === state) return;
       if (JSON.stringify(newState) === JSON.stringify(state)) return;
 
       states[_currStateKey] = newState;
@@ -95,12 +98,16 @@ function React() {
 
   function useEffect(callback: () => any, depArray?: any[]) {
     const { states, currStateKey } = _this;
+
+    // 실제로 React는 Deps배열이 없으면 callback함수를 실행시킨다.
     const hasNoDeps = !depArray;
     const deps = states[currStateKey];
-
     const hasChangedDeps: boolean = deps
       ? !depArray?.every((el: any, i: number) => el === deps[i])
       : true;
+
+    console.log(hasNoDeps, hasChangedDeps);
+
     if (hasNoDeps || hasChangedDeps) {
       callback();
       states[currStateKey] = depArray;
@@ -119,6 +126,6 @@ function React() {
     useEffect,
     render,
   };
-}
+})();
 
 export default React;
