@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./build",
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@react/*": ["react/*"],
+      "@router/*": ["router/*"]
+    },
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext", "ES2015"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"],
+  "include": [".", "src/**/*", "./types", "declaration.d.ts", "global.d.ts"]
+}
