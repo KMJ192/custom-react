@@ -9,13 +9,14 @@ export interface customElement {
   };
   event?: {
     type: string;
-    eventRun: () => void;
+    eventFunc: () => void;
   };
   dirty?: boolean;
   childNode?: customElement[];
+  key?: any;
 }
 
-interface ReactOptions {
+interface ReactClosureOptions {
   stateKey: number;
   states: any[];
   root: Element | null;
@@ -24,7 +25,7 @@ interface ReactOptions {
 }
 
 const React = (function () {
-  const _this = {
+  const _this: ReactClosureOptions = {
     stateKey: 0,
     states: [],
     component: null,
@@ -39,9 +40,8 @@ const React = (function () {
       const { tagName, value, event, props, childNode } = dom[i];
 
       const element: HTMLElement = document.createElement(tagName);
-      element.innerText = value;
+      if (value !== undefined && value !== null) element.innerText = value;
 
-      // element에 option 적용 기능 필요
       if (props) {
         for (const [key, value] of Object.entries(props)) {
           (element as any)[key] = value;
@@ -49,7 +49,7 @@ const React = (function () {
       }
 
       if (event) {
-        const { type, eventRun } = event;
+        const { type, eventFunc: eventRun } = event;
         element.addEventListener(type, eventRun);
       }
 
@@ -93,7 +93,6 @@ const React = (function () {
 
     const state = states[key];
     const setState = (newState: any) => {
-      // map set과 같은 원시타입은 비교하지 걸러내지 못하므로 로직이 추가로 필요함...
       if (newState === state) return;
       if (JSON.stringify(newState) === JSON.stringify(state)) return;
 
@@ -121,9 +120,9 @@ const React = (function () {
     _this.stateKey++;
   }
 
-  // function useMemo() {}
+  function useMemo() {}
 
-  // function useCallback() {}
+  function useCallback() {}
 
   return {
     useState,
@@ -133,3 +132,4 @@ const React = (function () {
 })();
 
 export default React;
+export const { useState, useEffect } = React;
