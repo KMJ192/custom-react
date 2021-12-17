@@ -15,30 +15,38 @@ export interface customElement {
   childNode?: customElement[];
 }
 
+interface ReactOptions {
+  stateKey: number;
+  states: any[];
+  root: Element | null;
+  component: () => customElement[] | null;
+  virtualDom: customElement[] | null;
+}
+
 const React = (function () {
   const _this = {
-    currStateKey: 0,
+    stateKey: 0,
     states: [],
     component: null,
     root: null,
     virtualDom: null,
   };
 
-  const creatRealDom = (root: Element, dom?: customElement[]) => {
-    if (dom === undefined) return;
+  const creatRealDom = (root: Element, dom?: customElement[] | null) => {
+    if (dom === undefined || dom === null) return;
 
     for (let i = 0; i < dom.length; i++) {
       const { tagName, value, event, props, childNode } = dom[i];
 
       const element: HTMLElement = document.createElement(tagName);
-      element.innerText = String(value);
+      element.innerText = value;
 
       // element에 option 적용 기능 필요
-      // if (props) {
-      //   for (const [key, value] of Object.entries(props)) {
-      //     (element as any)[key] = value;
-      //   }
-      // }
+      if (props) {
+        for (const [key, value] of Object.entries(props)) {
+          (element as any)[key] = value;
+        }
+      }
 
       if (event) {
         const { type, eventRun } = event;
@@ -54,22 +62,24 @@ const React = (function () {
 
   const reactRenderer = debounceFrame(() => {
     const { root, component, virtualDom } = _this;
-    if (root === null || component === null) return;
+    if (!root || !component) return;
+    const newVirtualDom: customElement[] | null = component();
 
     if (virtualDom === null) {
+      _this.virtualDom = newVirtualDom;
       root.innerHTML = '';
-      creatRealDom(root, component());
+      creatRealDom(root, newVirtualDom);
     } else {
-      // diffing 알고리즘 추가 필요, 휴리스틱알고리즘 1차 적용, fiber 알고리즘 2차 적용
+      // diffing 알고리즘 => 휴리스틱알고리즘 1차 적용, fiber 알고리즘 2차 적용 예정
+      diffingAlgorithm(virtualDom, newVirtualDom);
       root.innerHTML = '';
-      creatRealDom(root, component());
+      creatRealDom(root, newVirtualDom);
     }
-
-    _this.currStateKey = 0;
+    _this.stateKey = 0;
   });
 
   function render(
-    inputComponent: () => customElement,
+    inputComponent: () => customElement[],
     rootEle: Element | null,
   ) {
     _this.component = inputComponent;
@@ -77,27 +87,25 @@ const React = (function () {
     reactRenderer();
   }
 
-  function useState<T>(initState: T): [T, (newVal: T) => void] {
-    const { states, currStateKey } = _this;
+  function useState(initState: any): [any, (newVal: any) => void] {
+    const { states, stateKey: key } = _this;
+    if (states.length === key) states.push(initState);
 
-    const state = states[currStateKey] || initState;
-    const _currStateKey = currStateKey;
-
-    const setState = (newState: T) => {
+    const state = states[key];
+    const setState = (newState: any) => {
       // map set과 같은 원시타입은 비교하지 걸러내지 못하므로 로직이 추가로 필요함...
       if (newState === state) return;
       if (JSON.stringify(newState) === JSON.stringify(state)) return;
 
-      states[_currStateKey] = newState;
+      states[key] = newState;
       reactRenderer();
     };
-
-    _this.currStateKey++;
+    _this.stateKey += 1;
     return [state, setState];
   }
 
   function useEffect(callback: () => any, depArray?: any[]) {
-    const { states, currStateKey } = _this;
+    const { states, stateKey: currStateKey } = _this;
 
     // 실제로 React는 Deps배열이 없으면 callback함수를 실행시킨다.
     const hasNoDeps = !depArray;
@@ -106,20 +114,16 @@ const React = (function () {
       ? !depArray?.every((el: any, i: number) => el === deps[i])
       : true;
 
-    console.log(hasNoDeps, hasChangedDeps);
-
     if (hasNoDeps || hasChangedDeps) {
       callback();
       states[currStateKey] = depArray;
     }
-    _this.currStateKey++;
+    _this.stateKey++;
   }
 
-  function useMemo() {}
+  // function useMemo() {}
 
-  function useCallback() {}
-
-  function memo() {}
+  // function useCallback() {}
 
   return {
     useState,

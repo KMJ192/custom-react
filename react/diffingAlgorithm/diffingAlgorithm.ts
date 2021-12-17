@@ -4,7 +4,9 @@ function heuristicsAlgorithm(
   nextDom: customElement[],
 ) {
   // let newDom: customElement[] = [];
-  if (prevDom.length !== nextDom.length) {
-  }
+  // console.log('prev', prevDom);
+  // console.log('next', nextDom);
+  // if (prevDom.length !== nextDom.length) {
+  // }
 }
 export default heuristicsAlgorithm;
