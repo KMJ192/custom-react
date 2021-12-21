@@ -3,7 +3,6 @@ import React, { useState, useEffect } from '@react';
 
 function App() {
   // return routing();
-
   const [count, setCount] = useState(0);
   const [string, setString] = useState('');
   const [list, setList] = useState([]);

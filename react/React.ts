@@ -1,5 +1,5 @@
 import debounceFrame from './debounceFrame';
-import diffingAlgorithm from './diffingAlgorithm';
+// import diffingAlgorithm from './diffingAlgorithm';
 
 export interface customElement {
   tagName: string;
@@ -60,6 +60,8 @@ const React = (function () {
     }
   };
 
+  const heuristicsAlgorithm = () => {};
+
   const reactRenderer = debounceFrame(() => {
     const { root, component, virtualDom } = _this;
     if (!root || !component) return;
@@ -71,7 +73,7 @@ const React = (function () {
       creatRealDom(root, newVirtualDom);
     } else {
       // diffing 알고리즘 => 휴리스틱알고리즘 1차 적용, fiber 알고리즘 2차 적용 예정
-      diffingAlgorithm(virtualDom, newVirtualDom);
+      // diffingAlgorithm(virtualDom, newVirtualDom);
       root.innerHTML = '';
       creatRealDom(root, newVirtualDom);
     }
