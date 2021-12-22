@@ -6,14 +6,14 @@ function App() {
   const [count, setCount] = useState(0);
   const [string, setString] = useState('');
   const [list, setList] = useState([]);
-  // const [mount, setMount] = useState(false);
+  const [mount, setMount] = useState(false);
 
-  // useEffect(() => {
-  //   if (!mount) {
-  //     setMount(true);
-  //     setCount(count + 1);
-  //   }
-  // }, [count, mount]);
+  useEffect(() => {
+    if (!mount) {
+      setMount(true);
+      setCount(count + 1);
+    }
+  }, [count, mount]);
 
   return [
     {

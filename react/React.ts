@@ -89,12 +89,12 @@ const React = (function () {
     reactRenderer();
   }
 
-  function useState(initState: any): [any, (newVal: any) => void] {
+  function useState<T>(initState: T): [T, (newVal: T) => void] {
     const { states, stateKey: key } = _this;
     if (states.length === key) states.push(initState);
 
     const state = states[key];
-    const setState = (newState: any) => {
+    const setState = (newState: T) => {
       if (newState === state) return;
       if (JSON.stringify(newState) === JSON.stringify(state)) return;
 
@@ -114,7 +114,6 @@ const React = (function () {
     const hasChangedDeps: boolean = deps
       ? !depArray?.every((el: any, i: number) => el === deps[i])
       : true;
-
     if (hasNoDeps || hasChangedDeps) {
       callback();
       states[currStateKey] = depArray;
