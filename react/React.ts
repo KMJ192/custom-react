@@ -1,5 +1,4 @@
 import debounceFrame from './debounceFrame';
-// import diffingAlgorithm from './diffingAlgorithm';
 
 export interface customElement {
   tagName: string;
@@ -11,7 +10,6 @@ export interface customElement {
     type: string;
     eventFunc: () => void;
   };
-  dirty?: boolean;
   childNode?: customElement[];
   key?: any;
 }
@@ -59,8 +57,6 @@ const React = (function () {
       }
     }
   };
-
-  const heuristicsAlgorithm = () => {};
 
   const reactRenderer = debounceFrame(() => {
     const { root, component, virtualDom } = _this;

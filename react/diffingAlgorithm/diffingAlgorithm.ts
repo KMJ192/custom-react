@@ -41,3 +41,10 @@ function sameNodeCnt(prevDom: customElement[], nextDom: customElement[]) {
 function diffNodeCnt(prevDom: customElement[], nextDom: customElement[]) {}
 
 export default heuristicsAlgorithm;
+
+/*
+  fiber 알고리즘 자료
+  https://github.com/acdlite/react-fiber-architecture
+  https://bumkeyy.gitbook.io/bumkeyy-code/frontend/a-deep-dive-into-react-fiber-internals
+  https://chchoing88.github.io/ho_blog/react-fiber02/
+*/
