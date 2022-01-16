@@ -121,6 +121,8 @@ const React = (function () {
 
   function useCallback() {}
 
+  function useSuspence() {}
+
   return {
     useState,
     useEffect,
