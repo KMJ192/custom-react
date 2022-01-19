@@ -93,6 +93,10 @@ function App() {
         },
       ],
     },
+    {
+      tagName: 'span',
+      childNode: 'test',
+    },
   ];
 }
 

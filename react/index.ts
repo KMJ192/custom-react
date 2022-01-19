@@ -1,1 +1,1 @@
-export { default, useState, useEffect, customElement } from './React';
+export { default, useState, useEffect, ReactDOM } from './React';

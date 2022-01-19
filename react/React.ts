@@ -1,6 +1,6 @@
 import debounceFrame from './debounceFrame';
 
-export interface customElement {
+export interface ReactDOM {
   tagName: string;
   value: any;
   props?: {
@@ -10,7 +10,7 @@ export interface customElement {
     type: string;
     eventFunc: () => void;
   };
-  childNode?: customElement[];
+  childNode?: ReactDOM[] | string;
   key?: any;
 }
 
@@ -18,8 +18,8 @@ interface ReactClosureOptions {
   stateKey: number;
   states: any[];
   root: Element | null;
-  component: () => customElement[] | null;
-  virtualDom: customElement[] | null;
+  component: () => ReactDOM[] | null;
+  virtualDom: ReactDOM[] | null;
 }
 
 const React = (function () {
@@ -31,11 +31,15 @@ const React = (function () {
     virtualDom: null,
   };
 
-  const creatRealDom = (root: Element, dom?: customElement[] | null) => {
+  const creatRealDom = (node: Element, dom?: ReactDOM[] | string | null) => {
     if (dom === undefined || dom === null) return;
+    if (typeof dom === 'string') {
+      node.appendChild(document.createTextNode(dom));
+      return;
+    }
 
     for (let i = 0; i < dom.length; i++) {
-      const { tagName, value, event, props, childNode } = dom[i];
+      const { tagName, value, event, props, childNode } = dom[i] as ReactDOM;
 
       const element: HTMLElement = document.createElement(tagName);
       if (value !== undefined && value !== null) element.innerText = value;
@@ -47,11 +51,11 @@ const React = (function () {
       }
 
       if (event) {
-        const { type, eventFunc: eventRun } = event;
-        element.addEventListener(type, eventRun);
+        const { type, eventFunc: e } = event;
+        element.addEventListener(type, e);
       }
 
-      root.appendChild(element);
+      node.appendChild(element);
       if (childNode !== undefined) {
         creatRealDom(element, childNode);
       }
@@ -61,7 +65,7 @@ const React = (function () {
   const reactRenderer = debounceFrame(() => {
     const { root, component, virtualDom } = _this;
     if (!root || !component) return;
-    const newVirtualDom: customElement[] | null = component();
+    const newVirtualDom: ReactDOM[] | null = component();
 
     if (virtualDom === null) {
       _this.virtualDom = newVirtualDom;
@@ -76,10 +80,9 @@ const React = (function () {
     _this.stateKey = 0;
   });
 
-  function render(
-    inputComponent: () => customElement[],
-    rootEle: Element | null,
-  ) {
+  const createDOM = (node: ReactDOM) => {};
+
+  function render(inputComponent: () => ReactDOM[], rootEle: Element | null) {
     _this.component = inputComponent;
     _this.root = rootEle;
     reactRenderer();
