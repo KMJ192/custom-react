@@ -17,14 +17,12 @@ function sameNodeCnt(prevDom: ReactDOM[], nextDom: ReactDOM[]) {
   for (let i = 0; i < len; i++) {
     const {
       tagName: prevTagName,
-      value: prevValue,
       event: prevEvent,
       props: prevProps,
       key: prevKey,
     } = prevDom[i];
     const {
       tagName: nextTagName,
-      value: nextValue,
       event: nextEvent,
       props: nextProps,
       key: nextKey,

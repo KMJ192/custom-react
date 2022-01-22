@@ -2,7 +2,6 @@ import debounceFrame from './debounceFrame';
 
 export interface ReactDOM {
   tagName: string;
-  value: any;
   props?: {
     [key: string]: string;
   };
@@ -39,10 +38,9 @@ const React = (function () {
     }
 
     for (let i = 0; i < dom.length; i++) {
-      const { tagName, value, event, props, childNode } = dom[i] as ReactDOM;
+      const { tagName, event, props, childNode } = dom[i] as ReactDOM;
 
       const element: HTMLElement = document.createElement(tagName);
-      if (value !== undefined && value !== null) element.innerText = value;
 
       if (props) {
         for (const [key, value] of Object.entries(props)) {
@@ -119,8 +117,6 @@ const React = (function () {
     }
     _this.stateKey++;
   }
-
-  function useMemo() {}
 
   function useCallback() {}
 
