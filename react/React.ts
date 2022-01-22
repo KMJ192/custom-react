@@ -78,8 +78,6 @@ const React = (function () {
     _this.stateKey = 0;
   });
 
-  const createDOM = (node: ReactDOM) => {};
-
   function render(inputComponent: () => ReactDOM[], rootEle: Element | null) {
     _this.component = inputComponent;
     _this.root = rootEle;
@@ -118,9 +116,11 @@ const React = (function () {
     _this.stateKey++;
   }
 
-  function useCallback() {}
+  // function useCallback() {}
 
-  function useSuspence() {}
+  // function useMemo() {}
+
+  // function useSuspence() {}
 
   return {
     useState,

@@ -1,12 +1,16 @@
-import { ReactDOM } from '@react/React';
+import { ReactDOM, useState } from '@react/React';
 
-interface Props {
-  count: number;
-  increament: () => void;
-  decreament: () => void;
-}
+function Component1(): ReactDOM {
+  const [count, setCount] = useState(0);
 
-function Component1({ count, increament, decreament }: Props): ReactDOM {
+  const increament = () => {
+    setCount(count + 1);
+  };
+
+  const decreament = () => {
+    setCount(count - 1);
+  };
+
   return {
     tagName: 'div',
     childNode: [
