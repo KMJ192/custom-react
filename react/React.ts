@@ -19,6 +19,7 @@ const React: React = (function () {
       node.appendChild(document.createTextNode(dom));
       return;
     }
+
     if (Array.isArray(dom)) {
       dom.forEach((d: ReactDOM) => {
         const { tagName, event, props, childNode } = d;
@@ -32,8 +33,8 @@ const React: React = (function () {
           const { type, eventFunc: e } = event;
           element.addEventListener(type, e);
         }
-        node.appendChild(element);
         if (childNode !== undefined) {
+          node.appendChild(element);
           creatRealDom(element, childNode);
         }
       });
@@ -50,8 +51,8 @@ const React: React = (function () {
       const { type, eventFunc: e } = event;
       element.addEventListener(type, e);
     }
-    node.appendChild(element);
     if (childNode !== undefined) {
+      node.appendChild(element);
       creatRealDom(element, childNode);
     }
   };
@@ -60,7 +61,6 @@ const React: React = (function () {
     const { root, component } = _this;
     if (!root || !component) return;
     const vDom: ReactDOM[] | ReactDOM | null = component();
-    console.log(vDom);
 
     root.innerHTML = '';
     creatRealDom(root, vDom);

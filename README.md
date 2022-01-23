@@ -11,7 +11,7 @@
 
 ### Hooks
 - javascript의 클로저 메커니즘을 이용한다.
-- 대표적으로 컴포넌트 별 상태관리를 담당하는 useState hook과 컴포넌트의 mount, unmount, update 기능을 제공한느 useEffect hook이 있다.
+- 대표적으로 컴포넌트 별 상태관리를 담당하는 useState hook과 컴포넌트의 mount, unmount, update 기능을 제공하는 useEffect hook이 있다.
 
  ### Virtual DOM
 - 브라우저 Rendering과정은 4가지가 있다.
@@ -34,4 +34,3 @@
 - DOM에 변화가 생길경우 위의 Rendering과정이 반복된다.
 - 이에따라 DOM조작이 많이 발생하는데, 그때마다 위의 Rendering과정을 거치게 될 것이고, 이는 비효율 적인 작업이다.
 - Virtual DOM을 이용한다면 그 내용을 Real DOM에 적용하기 전 Virtual DOM에 먼저 적용시킨 후 최종 결과를 RealDOM에 전달하므로 브라우저상에서 발생하는 연산의 양을 줄이는데 도움이 된다.
-
