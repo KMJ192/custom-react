@@ -1,6 +1,6 @@
-import { ReactDOM, useState } from '@react/React';
+import { useState } from '@react';
 
-function Component1(): ReactDOM {
+function Component1() {
   const [count, setCount] = useState(0);
 
   const increament = () => {
@@ -21,22 +21,26 @@ function Component1(): ReactDOM {
       {
         tagName: 'button',
         childNode: 'increament',
-        event: {
-          type: 'click',
-          eventFunc: () => {
-            increament();
+        event: [
+          {
+            type: 'click',
+            eventFunc: () => {
+              increament();
+            },
           },
-        },
+        ],
       },
       {
         tagName: 'button',
         childNode: 'decreament',
-        event: {
-          type: 'click',
-          eventFunc: () => {
-            decreament();
+        event: [
+          {
+            type: 'click',
+            eventFunc: () => {
+              decreament();
+            },
           },
-        },
+        ],
       },
     ],
     props: {

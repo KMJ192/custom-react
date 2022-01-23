@@ -34,8 +34,7 @@
     "build": "cross-env NODE_ENV=PRODUCTION webpack --config webpack.prod.js",
     "dev": "cross-env NODE_ENV=DEVELOPMENT webpack --config webpack.dev.js",
     "clear": "rm -rf node_modules",
-    "reinstall": "rm -rf node_modules && yarn",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "reinstall": "rm -rf node_modules && yarn"
   },
   "keywords": [],
   "author": "",

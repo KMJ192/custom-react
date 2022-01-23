@@ -1,7 +1,7 @@
 import React, { ReactDOM } from '@react/React';
 import { RouterType } from './types';
 
-export const navigation = (url: string) => {
+const navigation = (url: string) => {
   history.pushState(null, '', url);
   React.routeRender();
 };
@@ -9,18 +9,26 @@ export const navigation = (url: string) => {
 function router(
   MainPage: () => ReactDOM,
   NotFound: () => ReactDOM,
-  component: RouterType[],
+  components: RouterType[],
 ): ReactDOM {
-  if (component.length === 0) {
+  if (components.length === 0) {
     return MainPage();
   }
 
   const { pathname } = location;
   if (pathname === '/') return MainPage();
 
-  for (const compo of component) {
-    if (pathname.indexOf(compo.path) >= 0) {
-      return compo.element();
+  for (const component of components) {
+    const { exact, path, element, queryString } = component;
+    if (
+      (exact === true && pathname === path) ||
+      (!exact && pathname.indexOf(path) >= 0)
+    ) {
+      return element();
+    }
+    console.log(queryString, pathname, path);
+    if (queryString && pathname.indexOf(path) >= 0) {
+      return element();
     }
   }
 
@@ -28,3 +36,5 @@ function router(
 }
 
 export default router;
+
+export { navigation };

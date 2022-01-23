@@ -6,17 +6,16 @@ const React: React = (function () {
     stateKey: 0,
     states: [],
     root: null,
-    virtualDom: null,
     component: null,
   };
 
   const creatRealDom = (
-    node: Element,
+    node: HTMLElement,
     dom?: ReactDOM[] | ReactDOM | string | null,
   ) => {
     if (dom === undefined || dom === null) return;
     if (typeof dom === 'string') {
-      node.appendChild(document.createTextNode(dom));
+      node.innerHTML = dom;
       return;
     }
 
@@ -30,14 +29,17 @@ const React: React = (function () {
           }
         }
         if (event) {
-          const { type, eventFunc: e } = event;
-          element.addEventListener(type, e);
+          event.forEach((e: any) => {
+            const { type, eventFunc } = e;
+            element.addEventListener(type, eventFunc);
+          });
         }
         if (childNode !== undefined) {
           node.appendChild(element);
           creatRealDom(element, childNode);
         }
       });
+      return;
     }
 
     const { tagName, event, props, childNode } = dom as ReactDOM;
@@ -48,8 +50,10 @@ const React: React = (function () {
       }
     }
     if (event) {
-      const { type, eventFunc: e } = event;
-      element.addEventListener(type, e);
+      event.forEach((e: any) => {
+        const { type, eventFunc } = e;
+        element.addEventListener(type, eventFunc);
+      });
     }
     if (childNode !== undefined) {
       node.appendChild(element);
@@ -63,7 +67,7 @@ const React: React = (function () {
     const vDom: ReactDOM[] | ReactDOM | null = component();
 
     root.innerHTML = '';
-    creatRealDom(root, vDom);
+    creatRealDom(root as HTMLElement, vDom);
     _this.stateKey = 0;
   });
 
@@ -74,13 +78,13 @@ const React: React = (function () {
   }
 
   function routeRender() {
+    _this.states = [];
     reactRenderer();
   }
 
   function useState<T = undefined>(initState: T): [T, (newVal: T) => void] {
     const { states, stateKey: key } = _this;
     if (states.length === key) states.push(initState);
-
     const state = states[key];
     const setState = (newState: T) => {
       if (newState === state) return;
@@ -115,14 +119,30 @@ const React: React = (function () {
 
   // function useSuspence() {}
 
+  function useParam() {
+    const path = location.pathname.split('/');
+    let pathInfo = {};
+    path.forEach((queryString) => {
+      if (queryString.length > 0 && queryString[1] === ':') {
+        pathInfo = {
+          ...pathInfo,
+          [queryString]: queryString,
+        };
+      }
+    });
+
+    return pathInfo;
+  }
+
   return {
     useState,
     useEffect,
     render,
     routeRender,
+    useParam,
   };
 })();
 
 export default React;
-export const { useState, useEffect } = React;
+export const { useState, useEffect, useParam } = React;
 export { ReactDOM };

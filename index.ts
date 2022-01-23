@@ -1,8 +1,10 @@
 import React from '@react';
 import App from '@src/App';
 
+import './style.css';
+
 React.render(App, document.getElementById('App'));
 
 window.addEventListener('popstate', () => {
-  React.render(App, document.getElementById('App'));
+  React.routeRender();
 });
