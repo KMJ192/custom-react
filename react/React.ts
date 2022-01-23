@@ -17,8 +17,8 @@ interface ReactClosureOptions {
   stateKey: number;
   states: any[];
   root: Element | null;
-  component: () => ReactDOM[] | null;
   virtualDom: ReactDOM[] | null;
+  component?: (() => ReactDOM[]) | null;
 }
 
 export interface React {
@@ -34,9 +34,9 @@ const React: React = (function () {
   const _this: ReactClosureOptions = {
     stateKey: 0,
     states: [],
-    component: null,
     root: null,
     virtualDom: null,
+    component: null,
   };
 
   const creatRealDom = (node: Element, dom?: ReactDOM[] | string | null) => {
