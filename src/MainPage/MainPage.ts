@@ -11,7 +11,6 @@ function MainPage(): ReactDOM {
         event: {
           type: 'click',
           eventFunc: () => {
-            // console.log('이동');
             navigation('/component1');
           },
         },
@@ -22,7 +21,6 @@ function MainPage(): ReactDOM {
         event: {
           type: 'click',
           eventFunc: () => {
-            // console.log('이동');
             navigation('/component2');
           },
         },

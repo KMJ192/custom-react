@@ -21,7 +21,16 @@ interface ReactClosureOptions {
   virtualDom: ReactDOM[] | null;
 }
 
-const React = (function () {
+export interface React {
+  useState<T>(initState: T): [T, (newVal: T) => void];
+  // useState<T = undefined>(): [
+  //   T | undefined,
+  //   (newVal: T | undefined) => void,
+  // ];
+  useEffect(effect: () => any, deps?: readonly any[]): void;
+}
+
+const React: React = (function () {
   const _this: ReactClosureOptions = {
     stateKey: 0,
     states: [],

@@ -18,7 +18,6 @@ function router(
   if (pathname === '/') return MainPage();
 
   for (const compo of component) {
-    console.log(compo);
     if (pathname.indexOf(compo.path) >= 0) {
       return compo.element();
     }
