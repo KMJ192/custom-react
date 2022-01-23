@@ -10,6 +10,7 @@ function Component2(): ReactDOM {
   const decreament = () => {
     setCount(count - 1);
   };
+  console.log('second component');
 
   return {
     tagName: 'div',

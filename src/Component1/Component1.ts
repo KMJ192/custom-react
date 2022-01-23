@@ -10,6 +10,7 @@ function Component1(): ReactDOM {
   const decreament = () => {
     setCount(count - 1);
   };
+  console.log('first component');
 
   return {
     tagName: 'div',

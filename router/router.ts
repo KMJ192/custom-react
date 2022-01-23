@@ -1,8 +1,10 @@
-import { ReactDOM } from '@react/React';
+import React, { ReactDOM } from '@react/React';
 import { RouterType } from './types';
 
 export const navigation = (url: string) => {
   history.pushState(null, '', url);
+  React.routeRender();
+  console.log('nav');
 };
 
 function router(

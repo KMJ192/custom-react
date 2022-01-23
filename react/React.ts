@@ -1,34 +1,5 @@
 import debounceFrame from './debounceFrame';
-
-export interface ReactDOM {
-  tagName: string;
-  props?: {
-    [key: string]: string;
-  };
-  event?: {
-    type: string;
-    eventFunc: () => void;
-  };
-  childNode?: ReactDOM[] | string;
-  key?: any;
-}
-
-interface ReactClosureOptions {
-  stateKey: number;
-  states: any[];
-  root: Element | null;
-  virtualDom: ReactDOM[] | null;
-  component?: (() => ReactDOM[]) | null;
-}
-
-export interface React {
-  useState<T>(initState: T): [T, (newVal: T) => void];
-  // useState<T = undefined>(): [
-  //   T | undefined,
-  //   (newVal: T | undefined) => void,
-  // ];
-  useEffect(effect: () => any, deps?: readonly any[]): void;
-}
+import { React, ReactClosureOptions, ReactDOM } from './types';
 
 const React: React = (function () {
   const _this: ReactClosureOptions = {
@@ -39,61 +10,74 @@ const React: React = (function () {
     component: null,
   };
 
-  const creatRealDom = (node: Element, dom?: ReactDOM[] | string | null) => {
+  const creatRealDom = (
+    node: Element,
+    dom?: ReactDOM[] | ReactDOM | string | null,
+  ) => {
     if (dom === undefined || dom === null) return;
     if (typeof dom === 'string') {
       node.appendChild(document.createTextNode(dom));
       return;
     }
-
-    for (let i = 0; i < dom.length; i++) {
-      const { tagName, event, props, childNode } = dom[i] as ReactDOM;
-
-      const element: HTMLElement = document.createElement(tagName);
-
-      if (props) {
-        for (const [key, value] of Object.entries(props)) {
-          (element as any)[key] = value;
+    if (Array.isArray(dom)) {
+      dom.forEach((d: ReactDOM) => {
+        const { tagName, event, props, childNode } = d;
+        const element: HTMLElement = document.createElement(tagName);
+        if (props) {
+          for (const [key, value] of Object.entries(props)) {
+            (element as any)[key] = value;
+          }
         }
-      }
+        if (event) {
+          const { type, eventFunc: e } = event;
+          element.addEventListener(type, e);
+        }
+        node.appendChild(element);
+        if (childNode !== undefined) {
+          creatRealDom(element, childNode);
+        }
+      });
+    }
 
-      if (event) {
-        const { type, eventFunc: e } = event;
-        element.addEventListener(type, e);
+    const { tagName, event, props, childNode } = dom as ReactDOM;
+    const element: HTMLElement = document.createElement(tagName);
+    if (props) {
+      for (const [key, value] of Object.entries(props)) {
+        (element as any)[key] = value;
       }
-
-      node.appendChild(element);
-      if (childNode !== undefined) {
-        creatRealDom(element, childNode);
-      }
+    }
+    if (event) {
+      const { type, eventFunc: e } = event;
+      element.addEventListener(type, e);
+    }
+    node.appendChild(element);
+    if (childNode !== undefined) {
+      creatRealDom(element, childNode);
     }
   };
 
   const reactRenderer = debounceFrame(() => {
-    const { root, component, virtualDom } = _this;
+    const { root, component } = _this;
     if (!root || !component) return;
-    const newVirtualDom: ReactDOM[] | null = component();
+    const vDom: ReactDOM[] | ReactDOM | null = component();
+    console.log(vDom);
 
-    if (virtualDom === null) {
-      _this.virtualDom = newVirtualDom;
-      root.innerHTML = '';
-      creatRealDom(root, newVirtualDom);
-    } else {
-      // diffing 알고리즘 => 휴리스틱알고리즘 1차 적용, fiber 알고리즘 2차 적용 예정
-      // diffingAlgorithm(virtualDom, newVirtualDom);
-      root.innerHTML = '';
-      creatRealDom(root, newVirtualDom);
-    }
+    root.innerHTML = '';
+    creatRealDom(root, vDom);
     _this.stateKey = 0;
   });
 
-  function render(inputComponent: () => ReactDOM[], rootEle: Element | null) {
-    _this.component = inputComponent;
+  function render(component: () => ReactDOM[], rootEle: Element | null) {
+    _this.component = component;
     _this.root = rootEle;
     reactRenderer();
   }
 
-  function useState<T>(initState: T): [T, (newVal: T) => void] {
+  function routeRender() {
+    reactRenderer();
+  }
+
+  function useState<T = undefined>(initState: T): [T, (newVal: T) => void] {
     const { states, stateKey: key } = _this;
     if (states.length === key) states.push(initState);
 
@@ -135,8 +119,10 @@ const React: React = (function () {
     useState,
     useEffect,
     render,
+    routeRender,
   };
 })();
 
 export default React;
 export const { useState, useEffect } = React;
+export { ReactDOM };

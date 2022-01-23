@@ -16,6 +16,8 @@
     "strict": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "noImplicitThis": false,
+    "noImplicitAny": false,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true
