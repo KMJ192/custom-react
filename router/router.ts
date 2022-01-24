@@ -1,4 +1,5 @@
-import React, { ReactDOM } from '@react/React';
+import React from '@react';
+import { ReactDOM } from '@react/React';
 import { RouterType } from './types';
 
 const navigation = (url: string) => {
@@ -26,7 +27,7 @@ function router(
     ) {
       return element();
     }
-    console.log(queryString, pathname, path);
+    // console.log(queryString, pathname, path);
     if (queryString && pathname.indexOf(path) >= 0) {
       return element();
     }

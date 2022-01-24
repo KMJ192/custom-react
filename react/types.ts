@@ -4,6 +4,7 @@ interface React {
     initState?: T,
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
+  useCallback(callback: (arg?: any) => any): void;
   useParam(): any;
   routeRender(): void;
 }
@@ -13,6 +14,8 @@ interface ReactClosureOptions {
   states: any[];
   root: Element | null;
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
+  unmount?: () => void;
+  callbackResult?: any;
 }
 
 interface ReactDOM {

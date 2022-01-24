@@ -7,6 +7,32 @@ const React: React = (function () {
     states: [],
     root: null,
     component: null,
+    unmount: undefined,
+    callbackResult: undefined,
+  };
+
+  const appendNodeList = (node: HTMLElement, dom: ReactDOM) => {
+    const { tagName, event, props, childNode } = dom;
+    const element: HTMLElement = document.createElement(tagName);
+    if (props) {
+      for (const [key, value] of Object.entries(props)) {
+        (element as any)[key] = value;
+      }
+    }
+    if (event) {
+      event.forEach((e: any) => {
+        const { type, eventFunc } = e;
+        element.addEventListener(type, eventFunc);
+      });
+    }
+
+    if (element) {
+      node.appendChild(element);
+    }
+
+    if (childNode !== undefined) {
+      creatRealDom(element, childNode);
+    }
   };
 
   const creatRealDom = (
@@ -20,45 +46,18 @@ const React: React = (function () {
     }
 
     if (Array.isArray(dom)) {
-      dom.forEach((d: ReactDOM) => {
-        const { tagName, event, props, childNode } = d;
-        const element: HTMLElement = document.createElement(tagName);
-        if (props) {
-          for (const [key, value] of Object.entries(props)) {
-            (element as any)[key] = value;
-          }
-        }
-        if (event) {
-          event.forEach((e: any) => {
-            const { type, eventFunc } = e;
-            element.addEventListener(type, eventFunc);
-          });
-        }
-        if (childNode !== undefined) {
-          node.appendChild(element);
-          creatRealDom(element, childNode);
+      dom.forEach((d: ReactDOM | string) => {
+        if (typeof d === 'string') {
+          console.log(d);
+          node.innerHTML = d;
+        } else {
+          appendNodeList(node, d);
         }
       });
       return;
     }
 
-    const { tagName, event, props, childNode } = dom as ReactDOM;
-    const element: HTMLElement = document.createElement(tagName);
-    if (props) {
-      for (const [key, value] of Object.entries(props)) {
-        (element as any)[key] = value;
-      }
-    }
-    if (event) {
-      event.forEach((e: any) => {
-        const { type, eventFunc } = e;
-        element.addEventListener(type, eventFunc);
-      });
-    }
-    if (childNode !== undefined) {
-      node.appendChild(element);
-      creatRealDom(element, childNode);
-    }
+    appendNodeList(node, dom);
   };
 
   const reactRenderer = debounceFrame(() => {
@@ -79,6 +78,9 @@ const React: React = (function () {
 
   function routeRender() {
     _this.states = [];
+    if (_this.unmount) {
+      _this.unmount();
+    }
     reactRenderer();
   }
 
@@ -97,7 +99,7 @@ const React: React = (function () {
     return [state, setState];
   }
 
-  function useEffect(callback: () => any, depArray?: any[]) {
+  function useEffect(mountCallback: () => any, depArray?: any[]) {
     const { states, stateKey: currStateKey } = _this;
 
     // 실제로 React는 Deps배열이 없으면 callback함수를 실행시킨다.
@@ -107,16 +109,27 @@ const React: React = (function () {
       ? !depArray?.every((el: any, i: number) => el === deps[i])
       : true;
     if (hasNoDeps || hasChangedDeps) {
-      callback();
+      _this.unmount = mountCallback();
       states[currStateKey] = depArray;
     }
     _this.stateKey++;
   }
 
-  // function useCallback() {}
+  // function useCallback(callback: (arg?: any) => any, depArray?: any[]) {
+  //   const { states, stateKey: currStateKey } = _this;
+  //   const deps = states[currStateKey];
+  //   const hasNoDeps = !depArray;
+  //   const hasChangedDeps: boolean = deps
+  //     ? !depArray?.every((el: any, i: number) => el === deps[i])
+  //     : true;
+  //   if (hasNoDeps || hasChangedDeps || _this.callbackResult !== callback()) {
+  //     _this.callbackResult = callback()();
+  //     states[currStateKey] = depArray;
+  //   }
+  //   _this.stateKey++;
+  // }
 
-  // function useMemo() {}
-
+  // function useMemo(callback: (arg?: any) => any) {}
   // function useSuspence() {}
 
   function useParam() {
@@ -137,6 +150,7 @@ const React: React = (function () {
   return {
     useState,
     useEffect,
+    useCallback,
     render,
     routeRender,
     useParam,
@@ -144,5 +158,5 @@ const React: React = (function () {
 })();
 
 export default React;
-export const { useState, useEffect, useParam } = React;
+export const { useState, useEffect, useParam, useCallback } = React;
 export { ReactDOM };

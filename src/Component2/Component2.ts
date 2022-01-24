@@ -4,7 +4,6 @@ function Component2() {
   const [count, setCount] = useState(0);
 
   const path = useParam();
-  console.log(path);
 
   const increament = () => {
     setCount(count + 1);

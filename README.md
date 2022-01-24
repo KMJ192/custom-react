@@ -5,9 +5,7 @@
 - virtual dom diffing알고리즘 적용으로 virtual dom에 대한 이해도 향상
 
 ## Todo list
-1. virtual dom 구현
-2. router 구현
-3. useEffect 상세구현
+1. costom-react로 dev matching 문제 풀기
 
 ### Hooks
 - javascript의 클로저 메커니즘을 이용한다.

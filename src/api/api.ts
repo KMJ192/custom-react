@@ -1,3 +1,5 @@
+export const serverAddr = 'http://localhost:3001';
+
 const ajax = new XMLHttpRequest();
 
 function api(method: string, url: string): Promise<any> | null {
@@ -10,7 +12,13 @@ function api(method: string, url: string): Promise<any> | null {
     ajax.open(method, url, true);
     ajax.onload = () => {
       if (ajax.status >= 200 && ajax.status < 300) {
-        res(JSON.parse(ajax.response));
+        const { response } = ajax;
+        try {
+          const json = JSON.parse(ajax.response);
+          res(json);
+        } catch {
+          res(response);
+        }
       } else {
         rej(ajax.statusText);
       }
