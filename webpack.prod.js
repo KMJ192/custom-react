@@ -1,6 +1,8 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.config.js');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 module.exports = merge(common, {
   devtool: 'hidden-source-map',
   mode: 'production',
@@ -18,4 +20,9 @@ module.exports = merge(common, {
       },
     },
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[contenthash].css',
+    }),
+  ],
 });

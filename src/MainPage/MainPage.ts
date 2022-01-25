@@ -11,14 +11,14 @@ interface ProductType {
 
 function MainPage() {
   const [productList, setProductList] = useState([]);
-  const apiTest = async () => {
+  const getProductList = async () => {
     const pl = await api('get', `${serverAddr}/product-list`);
     setProductList(pl);
   };
 
   useEffect(() => {
-    apiTest();
-  }, [apiTest]);
+    getProductList();
+  }, [getProductList]);
 
   return {
     tagName: 'div',

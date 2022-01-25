@@ -46,9 +46,15 @@ const React: React = (function () {
     }
 
     if (Array.isArray(dom)) {
-      dom.forEach((d: ReactDOM | string) => {
+      dom.forEach((d: ReactDOM | string, idx: number) => {
         if (typeof d === 'string') {
-          node.innerHTML = d;
+          if (idx > 0) {
+            console.error(
+              '문자열 노드가 첫번째가 아닐 경우 렌더링을 할 수 없습니다.',
+            );
+          } else {
+            node.innerHTML = d;
+          }
         } else {
           appendNodeList(node, d);
         }

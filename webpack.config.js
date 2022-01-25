@@ -53,9 +53,6 @@ module.exports = {
           }
         : false,
     }),
-    new MiniCssExtractPlugin({
-      filename: '[contenthash].css',
-    }),
     new ForkTsCheckerWebpackPlugin(),
   ],
 };
