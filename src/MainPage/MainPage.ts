@@ -1,5 +1,5 @@
 import { useState, useEffect } from '@react';
-import { navigation } from '@router/router';
+import { useRedirection } from '@router';
 import api, { serverAddr } from '@src/api';
 
 interface ProductType {
@@ -52,7 +52,7 @@ function MainPage() {
                 {
                   type: 'click',
                   eventFunc: () => {
-                    navigation(`/products/${id}`);
+                    useRedirection(`/products/${id}`);
                   },
                 },
               ],

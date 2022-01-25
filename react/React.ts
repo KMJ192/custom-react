@@ -48,7 +48,6 @@ const React: React = (function () {
     if (Array.isArray(dom)) {
       dom.forEach((d: ReactDOM | string) => {
         if (typeof d === 'string') {
-          console.log(d);
           node.innerHTML = d;
         } else {
           appendNodeList(node, d);
@@ -132,31 +131,15 @@ const React: React = (function () {
   // function useMemo(callback: (arg?: any) => any) {}
   // function useSuspence() {}
 
-  function useParam() {
-    const path = location.pathname.split('/');
-    let pathInfo = {};
-    path.forEach((queryString) => {
-      if (queryString.length > 0 && queryString[1] === ':') {
-        pathInfo = {
-          ...pathInfo,
-          [queryString]: queryString,
-        };
-      }
-    });
-
-    return pathInfo;
-  }
-
   return {
     useState,
     useEffect,
     useCallback,
     render,
     routeRender,
-    useParam,
   };
 })();
 
 export default React;
-export const { useState, useEffect, useParam, useCallback } = React;
+export const { useState, useEffect, useCallback } = React;
 export { ReactDOM };

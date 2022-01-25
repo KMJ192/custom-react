@@ -1,1 +1,1 @@
-export { default, useState, useEffect, useParam, ReactDOM } from './React';
+export { default, useState, useEffect, ReactDOM } from './React';

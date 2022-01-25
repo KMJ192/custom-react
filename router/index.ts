@@ -1,1 +1,1 @@
-export { default } from './router';
+export { default, useRouter, useRedirection, useParam } from './Router';

@@ -5,7 +5,6 @@ interface React {
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
   useCallback(callback: (arg?: any) => any): void;
-  useParam(): any;
   routeRender(): void;
 }
 
