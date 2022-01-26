@@ -48,14 +48,12 @@ function MainPage() {
               props: {
                 className: 'Product',
               },
-              event: [
-                {
-                  type: 'click',
-                  eventFunc: () => {
-                    useRedirection(`/products/${id}`);
-                  },
+              event: {
+                type: 'click',
+                eventFunc: () => {
+                  useRedirection(`/web/products/${id}`);
                 },
-              ],
+              },
             };
           }),
       },

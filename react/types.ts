@@ -28,6 +28,8 @@ interface ReactDOM {
   }[];
   childNode?: ReactDOM | ReactDOM[] | string;
   key?: any;
+  frontStringNode?: string;
+  backStringNode?: string;
 }
 
 export { React, ReactClosureOptions, ReactDOM };

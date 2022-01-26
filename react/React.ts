@@ -11,31 +11,61 @@ const React: React = (function () {
     callbackResult: undefined,
   };
 
-  const appendNodeList = (node: HTMLElement, dom: ReactDOM) => {
-    const { tagName, event, props, childNode } = dom;
+  const appendNode = (node: HTMLElement, dom?: ReactDOM) => {
+    if (!dom || !dom.tagName) {
+      return;
+    }
+    const {
+      tagName,
+      event,
+      props,
+      childNode,
+      frontStringNode,
+      backStringNode,
+    } = dom;
     const element: HTMLElement = document.createElement(tagName);
+
+    // Setting node property
     if (props) {
       for (const [key, value] of Object.entries(props)) {
         (element as any)[key] = value;
       }
     }
+
+    // Setting node event
     if (event) {
-      event.forEach((e: any) => {
-        const { type, eventFunc } = e;
+      if (Array.isArray(event)) {
+        event.forEach((e: any) => {
+          const { type, eventFunc } = e;
+          console.log(e);
+          element.addEventListener(type, eventFunc);
+        });
+      } else {
+        const { type, eventFunc } = event;
         element.addEventListener(type, eventFunc);
-      });
+      }
+    }
+
+    // Setting string on front of node
+    if (frontStringNode !== undefined) {
+      node.innerText = frontStringNode;
     }
 
     if (element) {
       node.appendChild(element);
     }
 
+    // Setting string on back of node
+    if (backStringNode !== undefined) {
+      node.appendChild(document.createTextNode(backStringNode));
+    }
+
     if (childNode !== undefined) {
-      creatRealDom(element, childNode);
+      createDOM(element, childNode);
     }
   };
 
-  const creatRealDom = (
+  const createDOM = (
     node: HTMLElement,
     dom?: ReactDOM[] | ReactDOM | string | null,
   ) => {
@@ -46,23 +76,17 @@ const React: React = (function () {
     }
 
     if (Array.isArray(dom)) {
-      dom.forEach((d: ReactDOM | string, idx: number) => {
+      dom.forEach((d: ReactDOM | string) => {
         if (typeof d === 'string') {
-          if (idx > 0) {
-            console.error(
-              '문자열 노드가 첫번째가 아닐 경우 렌더링을 할 수 없습니다.',
-            );
-          } else {
-            node.innerHTML = d;
-          }
+          console.error('문자열 노드는 배열로 할당할 수 없습니다.');
         } else {
-          appendNodeList(node, d);
+          appendNode(node, d);
         }
       });
       return;
     }
 
-    appendNodeList(node, dom);
+    appendNode(node, dom);
   };
 
   const reactRenderer = debounceFrame(() => {
@@ -71,7 +95,7 @@ const React: React = (function () {
     const vDom: ReactDOM[] | ReactDOM | null = component();
 
     root.innerHTML = '';
-    creatRealDom(root as HTMLElement, vDom);
+    createDOM(root as HTMLElement, vDom);
     _this.stateKey = 0;
   });
 
