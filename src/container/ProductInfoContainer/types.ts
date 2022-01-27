@@ -14,4 +14,11 @@ interface ProductInfoType {
   }[];
 }
 
-export { ProductInfoType };
+interface SelectedType {
+  [key: string]: {
+    name: string;
+    price: number;
+  };
+}
+
+export { ProductInfoType, SelectedType };

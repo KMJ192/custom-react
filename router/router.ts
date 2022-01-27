@@ -50,8 +50,8 @@ const Router = (function () {
     return NotFound();
   }
 
-  function useRedirection(url: string) {
-    history.pushState(null, '', url);
+  function useRedirection(url: string, data?: { [key: string]: string }) {
+    history.pushState(data, '', url);
     React.routeRender();
   }
 

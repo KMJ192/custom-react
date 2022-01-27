@@ -12,5 +12,5 @@ module.exports = merge(common, {
   },
   mode: 'development',
   devtool: 'eval',
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [new MiniCssExtractPlugin({ filename: './src/static/style.css' })],
 });

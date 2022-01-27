@@ -1,11 +1,21 @@
 const path = require('path');
-const webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const LinkTypePlugin =
+  require('html-webpack-link-type-plugin').HtmlWebpackLinkTypePlugin;
 
 const isProd = process.env.NODE_ENV === 'PRODUCTION';
+
+// const postcssLoader = {
+//   loader: 'postcss-loader',
+//   options: {
+//     postcssOptions: {
+//       config: path.resolve(__dirname, 'postcss.config.js'),
+//     },
+//   },
+// };
 
 module.exports = {
   entry: './index.ts',
@@ -41,7 +51,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'Webpack',
       template: './public/index.html',
@@ -54,5 +63,8 @@ module.exports = {
         : false,
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new LinkTypePlugin({
+      '*.css': 'text/css',
+    }),
   ],
 };

@@ -5,6 +5,8 @@ import NotFound from './NotFound';
 import ProductInfoContainer from './container/ProductInfoContainer';
 import CartContainer from './container/CartContainer';
 
+import '../static/style.css';
+
 function App() {
   return useRouter(MainPage, NotFound, [
     {

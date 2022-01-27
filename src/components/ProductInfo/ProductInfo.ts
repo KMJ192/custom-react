@@ -1,15 +1,17 @@
 import { useRedirection } from '@router';
-import { ProductInfoType } from '@src/container/ProductInfoContainer/types';
+import {
+  ProductInfoType,
+  SelectedType,
+} from '@src/container/ProductInfoContainer/types';
 
 interface Props {
-  selectedProduct: {
-    name: string;
-    price: number;
-  };
+  selectHandler: (idx: number) => void;
+  selectedProduct?: SelectedType;
   productInfo?: ProductInfoType;
 }
 
-function ProductInfo({ selectedProduct, productInfo }: Props) {
+function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
+  console.log(selectedProduct);
   return {
     tagName: 'div',
     props: {
@@ -54,11 +56,16 @@ function ProductInfo({ selectedProduct, productInfo }: Props) {
                 event: {
                   type: 'click',
                   eventFunc: function () {
-                    console.log(this.options[0].value);
+                    const { options } = this;
+                    selectHandler(options.selectedIndex);
                   },
                 },
                 childNode: productInfo
                   ? [
+                      {
+                        tagName: 'option',
+                        childNode: '선택하세요',
+                      },
                       ...(productInfo as ProductInfoType).productOptions.map(
                         (option) => {
                           const { name, price, stock } = option;
@@ -97,27 +104,39 @@ function ProductInfo({ selectedProduct, productInfo }: Props) {
                   },
                   {
                     tagName: 'ul',
-                    childNode: [
-                      {
-                        tagName: 'li',
-                        value: '커피잔 100개 번들 10000원',
-                        childNode: [
-                          {
-                            tagName: 'div',
-                            childNode: [
-                              {
-                                tagName: 'input',
-                                props: {
-                                  type: 'number',
-                                  value: selectedProduct.price,
-                                },
-                                backStringNode: '개',
-                              },
-                            ],
-                          },
-                        ],
-                      },
+                    childNode: selectedProduct && [
+                      Object.keys(selectedProduct).map((id: string) => {
+                        return {
+                          tagName: 'li',
+                          childNode: selectedProduct[id].name,
+                          // frontStringNode: selectedProduct[id].name,
+                          // childNode: {
+                          //   tagname: 'div',
+                          //   childNod
+                          // }
+                        };
+                      }),
                     ],
+                    // childNode: selectedProduct && [
+                    //   Object.keys(selectedProduct).map((id: string) => {
+                    //     console.log(id);
+                    //     return {
+                    //       tagName: 'li',
+                    //       frontStringNode: selectedProduct[id].name,
+                    //       childNode: {
+                    //         tagName: 'div',
+                    //         childNode: {
+                    //           tagName: 'input',
+                    //           props: {
+                    //             type: 'number',
+                    //             value: selectedProduct[id].price,
+                    //           },
+                    //           backStringNode: '개',
+                    //         },
+                    //       },
+                    //     };
+                    //   }),
+                    // ],
                   },
                   {
                     tagName: 'div',
