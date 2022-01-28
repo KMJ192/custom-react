@@ -15,7 +15,6 @@ interface Props {
 }
 
 function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
-  console.log(selectedProduct);
   return {
     tagName: 'div',
     props: {

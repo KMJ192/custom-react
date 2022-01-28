@@ -11,6 +11,9 @@ module.exports = merge(common, {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, buildDir),
+    // historyApiFallback path setting option
+    // https://stackoverflow.com/questions/37271062/historyapifallback-doesnt-work-in-webpack-dev-server/38207496#38207496
+    publicPath: '/',
   },
   devServer: {
     static: {
