@@ -37,7 +37,6 @@ const React: React = (function () {
       if (Array.isArray(event)) {
         event.forEach((e: any) => {
           const { type, eventFunc } = e;
-          console.log(e);
           element.addEventListener(type, eventFunc);
         });
       } else {

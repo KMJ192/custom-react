@@ -1,9 +1,16 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.config.js');
 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const prodDir = 'build';
+
 module.exports = merge(common, {
+  output: {
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(__dirname, prodDir),
+  },
   devtool: 'hidden-source-map',
   mode: 'production',
   optimization: {
@@ -21,6 +28,15 @@ module.exports = merge(common, {
     },
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Webpack',
+      template: './public/index.html',
+      filename: 'index.html',
+      minify: {
+        removeComments: true,
+        useShortDoctype: true,
+      },
+    }),
     new MiniCssExtractPlugin({
       filename: '[contenthash].css',
     }),

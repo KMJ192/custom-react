@@ -4,6 +4,10 @@ import {
   SelectedType,
 } from '@src/container/ProductInfoContainer/types';
 
+import classNames from 'classnames/bind';
+import style from './ProductInfo.module.scss';
+const cx = classNames.bind(style);
+
 interface Props {
   selectHandler: (idx: number) => void;
   selectedProduct?: SelectedType;
@@ -15,7 +19,7 @@ function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
   return {
     tagName: 'div',
     props: {
-      className: 'ProductDetailPage',
+      className: cx('ProductDetailPage'),
     },
     childNode: [
       {
@@ -25,7 +29,7 @@ function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
       {
         tagName: 'div',
         props: {
-          className: 'ProductDetail',
+          className: cx('ProductDetail'),
         },
         childNode: [
           {
@@ -37,7 +41,7 @@ function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
           {
             tagName: 'div',
             props: {
-              className: 'ProductDetail__info',
+              className: cx('ProductDetail__info'),
             },
             childNode: [
               {
@@ -48,7 +52,7 @@ function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
                 tagName: 'div',
                 childNode: `${productInfo?.price}원~`,
                 props: {
-                  className: 'ProductDetail__price',
+                  className: cx('ProductDetail__price'),
                 },
               },
               {
@@ -95,7 +99,7 @@ function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
               {
                 tagName: 'div',
                 props: {
-                  className: 'ProductDetail__selectedOptions',
+                  className: cx('ProductDetail__selectedOptions'),
                 },
                 childNode: [
                   {
@@ -117,37 +121,17 @@ function ProductInfo({ selectedProduct, productInfo, selectHandler }: Props) {
                         };
                       }),
                     ],
-                    // childNode: selectedProduct && [
-                    //   Object.keys(selectedProduct).map((id: string) => {
-                    //     console.log(id);
-                    //     return {
-                    //       tagName: 'li',
-                    //       frontStringNode: selectedProduct[id].name,
-                    //       childNode: {
-                    //         tagName: 'div',
-                    //         childNode: {
-                    //           tagName: 'input',
-                    //           props: {
-                    //             type: 'number',
-                    //             value: selectedProduct[id].price,
-                    //           },
-                    //           backStringNode: '개',
-                    //         },
-                    //       },
-                    //     };
-                    //   }),
-                    // ],
                   },
                   {
                     tagName: 'div',
                     props: {
-                      className: 'ProductDetail__totalPrice',
+                      className: cx('ProductDetail__totalPrice'),
                     },
                   },
                   {
                     tagName: 'button',
                     props: {
-                      className: 'OrderButton',
+                      className: cx('OrderButton'),
                     },
                     childNode: '주문하기',
                     event: {
