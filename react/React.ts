@@ -29,14 +29,14 @@ const React: React = (function () {
     // Setting node property
     if (props) {
       for (const [key, value] of Object.entries(props)) {
-        (element as any)[key] = value;
+        (element as HTMLElement)[key] = value;
       }
     }
 
     // Setting node event
     if (event) {
       if (Array.isArray(event)) {
-        event.forEach((e: any) => {
+        event.forEach((e: { type: string; eventFunc: () => void }) => {
           const { type, eventFunc } = e;
           element.addEventListener(type, eventFunc);
         });
