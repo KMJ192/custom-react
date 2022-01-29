@@ -9,6 +9,7 @@ const React: React = (function () {
     component: null,
     unmount: undefined,
     callbackResult: undefined,
+    focusElement: undefined,
   };
 
   const appendNode = (node: HTMLElement, dom?: ReactDOM) => {
@@ -47,16 +48,16 @@ const React: React = (function () {
 
     // Setting string on front of node
     if (frontStringNode !== undefined) {
-      node.innerText = frontStringNode;
+      node.insertAdjacentText('beforeend', frontStringNode);
     }
 
     if (element) {
-      node.appendChild(element);
+      node.insertAdjacentElement('beforeend', element);
     }
 
     // Setting string on back of node
     if (backStringNode !== undefined) {
-      node.appendChild(document.createTextNode(backStringNode));
+      node.insertAdjacentText('beforeend', backStringNode);
     }
 
     if (childNode !== undefined) {
@@ -92,7 +93,6 @@ const React: React = (function () {
     const { root, component } = _this;
     if (!root || !component) return;
     const vDom: ReactDOM[] | ReactDOM | null = component();
-
     root.innerHTML = '';
     createDOM(root as HTMLElement, vDom);
     _this.stateKey = 0;

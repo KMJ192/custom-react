@@ -2,8 +2,6 @@ const path = require('path');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const LinkTypePlugin =
-  require('html-webpack-link-type-plugin').HtmlWebpackLinkTypePlugin;
 
 // const isProd = process.env.NODE_ENV === 'PRODUCTION';
 
@@ -24,6 +22,7 @@ module.exports = {
       '@src': path.resolve(__dirname, 'src'),
       '@react': path.resolve(__dirname, 'react'),
       '@router': path.resolve(__dirname, 'router'),
+      '@api': path.resolve(__dirname, 'api'),
     },
   },
   module: {
@@ -80,10 +79,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new ForkTsCheckerWebpackPlugin(),
-    new LinkTypePlugin({
-      '*.css': 'text/css',
-    }),
-  ],
+  plugins: [new ForkTsCheckerWebpackPlugin()],
 };

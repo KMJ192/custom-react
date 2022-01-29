@@ -15,6 +15,7 @@ interface ReactClosureOptions {
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
   unmount?: () => void;
   callbackResult?: any;
+  focusElement?: HTMLElement;
 }
 
 interface ReactDOM {

@@ -8,8 +8,9 @@ const Router = (function () {
   function useRouter(
     MainPage: () => ReactDOM,
     NotFound: () => ReactDOM,
-    components: RouterType[],
+    components?: RouterType[],
   ): ReactDOM {
+    if (components === undefined) return MainPage();
     query = {};
     if (components.length === 0) {
       return MainPage();
@@ -17,7 +18,6 @@ const Router = (function () {
 
     const { pathname } = location;
     if (pathname === '/') return MainPage();
-
     for (const component of components) {
       const { exact, path, element, queryString } = component;
       if (

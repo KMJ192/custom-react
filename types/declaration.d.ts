@@ -1,6 +1,7 @@
 declare module '@react';
 declare module '@router';
 declare module '@src';
+declare module '@api';
 
 declare module '*.module.css' {
   const classes: { [key: string]: string };
