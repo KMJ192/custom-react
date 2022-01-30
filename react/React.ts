@@ -9,11 +9,14 @@ const React: React = (function () {
     component: null,
     unmount: undefined,
     callbackResult: undefined,
-    focusElement: undefined,
+    ref: undefined,
   };
 
   const appendNode = (node: HTMLElement, dom?: ReactDOM) => {
-    if (!dom || !dom.tagName) {
+    if (!dom) {
+      return;
+    }
+    if (!dom.tagName && !dom.node) {
       return;
     }
     const {
@@ -24,12 +27,14 @@ const React: React = (function () {
       frontStringNode,
       backStringNode,
     } = dom;
-    const element: HTMLElement = document.createElement(tagName);
+    const element: HTMLElement = dom.node
+      ? dom.node
+      : document.createElement(String(tagName));
 
     // Setting node property
     if (props) {
       for (const [key, value] of Object.entries(props)) {
-        (element as HTMLElement)[key] = value;
+        (element as any)[key] = value;
       }
     }
 
@@ -96,6 +101,9 @@ const React: React = (function () {
     root.innerHTML = '';
     createDOM(root as HTMLElement, vDom);
     _this.stateKey = 0;
+    if (_this.ref) {
+      _this.ref();
+    }
   });
 
   function render(component: () => ReactDOM[], rootEle: Element | null) {
@@ -127,7 +135,7 @@ const React: React = (function () {
     return [state, setState];
   }
 
-  function useEffect(mountCallback: () => any, depArray?: any[]) {
+  function useEffect(effect: () => any, depArray?: any[]) {
     const { states, stateKey: currStateKey } = _this;
 
     // 실제로 React는 Deps배열이 없으면 callback함수를 실행시킨다.
@@ -137,38 +145,25 @@ const React: React = (function () {
       ? !depArray?.every((el: any, i: number) => el === deps[i])
       : true;
     if (hasNoDeps || hasChangedDeps) {
-      _this.unmount = mountCallback();
+      _this.unmount = effect();
       states[currStateKey] = depArray;
     }
     _this.stateKey++;
   }
 
-  // function useCallback(callback: (arg?: any) => any, depArray?: any[]) {
-  //   const { states, stateKey: currStateKey } = _this;
-  //   const deps = states[currStateKey];
-  //   const hasNoDeps = !depArray;
-  //   const hasChangedDeps: boolean = deps
-  //     ? !depArray?.every((el: any, i: number) => el === deps[i])
-  //     : true;
-  //   if (hasNoDeps || hasChangedDeps || _this.callbackResult !== callback()) {
-  //     _this.callbackResult = callback()();
-  //     states[currStateKey] = depArray;
-  //   }
-  //   _this.stateKey++;
-  // }
-
-  // function useMemo(callback: (arg?: any) => any) {}
-  // function useSuspence() {}
+  function useInjection(event: () => void) {
+    _this.ref = event;
+  }
 
   return {
     useState,
     useEffect,
-    useCallback,
+    useInjection,
     render,
     routeRender,
   };
 })();
 
 export default React;
-export const { useState, useEffect, useCallback } = React;
+export const { useState, useEffect, useInjection } = React;
 export { ReactDOM };

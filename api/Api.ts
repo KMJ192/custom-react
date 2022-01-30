@@ -20,7 +20,7 @@ const api: Api = (function () {
     return null;
   }
 
-  function useGlobalUrl(url: string) {
+  function useGlobalUrl(url?: string) {
     serverAddr = url || '';
   }
 

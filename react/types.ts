@@ -4,7 +4,7 @@ interface React {
     initState?: T,
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
-  useCallback(callback: (arg?: any) => any): void;
+  useInjection(event: () => void): void;
   routeRender(): void;
 }
 
@@ -12,10 +12,10 @@ interface ReactClosureOptions {
   stateKey: number;
   states: any[];
   root: Element | null;
+  callbackResult?: any;
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
   unmount?: () => void;
-  callbackResult?: any;
-  focusElement?: HTMLElement;
+  ref?: () => any;
 }
 
 interface ReactDOM {
@@ -23,14 +23,20 @@ interface ReactDOM {
   props?: {
     [key: string]: string;
   };
-  event?: {
-    type: string;
-    eventFunc: () => void;
-  }[];
+  event?:
+    | {
+        type: string;
+        eventFunc: () => void;
+      }
+    | {
+        type: string;
+        eventFunc: () => void;
+      }[];
   childNode?: ReactDOM | ReactDOM[] | string;
   key?: any;
   frontStringNode?: string;
   backStringNode?: string;
+  node?: HTMLElement;
 }
 
 export { React, ReactClosureOptions, ReactDOM };
