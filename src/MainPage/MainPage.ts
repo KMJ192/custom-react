@@ -1,22 +1,18 @@
-import { useState } from '@react';
 import { useInjection } from '@react';
+import Animation from '@src/Canvas/Animation';
 
 function MainPage() {
-  const [value, setValue] = useState(0);
-
-  const onChange = (e: Event) => {
-    setValue(Number((e.target as HTMLInputElement).value));
-  };
   useInjection(() => {
-    const test = document.getElementsByClassName('test')[0];
-    if (test) {
-      test.addEventListener('input', onChange);
-    }
+    const animation = new Animation('canvas');
   });
-  return `
-    <input value='${value}' class='test' />
-    <div>${value}</div>
-  `;
+  return {
+    tagName: 'canvas',
+    props: {
+      id: 'canvas',
+      width: 500,
+      height: 400,
+    },
+  };
 }
 
 export default MainPage;
