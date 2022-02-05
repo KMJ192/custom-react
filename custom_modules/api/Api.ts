@@ -1,4 +1,4 @@
-import { Api } from './types';
+import type { Api } from './types';
 
 const api: Api = (function () {
   let serverAddr = '';

@@ -1,21 +1,22 @@
-interface React {
+interface ReactType {
   useState<T>(initState: T): [T, (newVal: T) => void];
   useState<T = undefined>(
     initState?: T,
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
-  useInjection(event: () => void): void;
-  routeRender(): void;
+  useDocument(event: () => void): void;
 }
 
 interface ReactClosureOptions {
+  root: Element | null;
   stateKey: number;
   states: any[];
-  root: Element | null;
-  callbackResult?: any;
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
   unmount?: () => void;
-  ref?: () => any;
+  injected: {
+    event: () => any;
+    unmount?: () => void;
+  };
 }
 
 interface ReactDOM {
@@ -39,4 +40,4 @@ interface ReactDOM {
   node?: HTMLElement;
 }
 
-export { React, ReactClosureOptions, ReactDOM };
+export { ReactType, ReactClosureOptions, ReactDOM };

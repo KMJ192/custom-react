@@ -1,4 +1,4 @@
-import { ReactDOM } from '@react/React';
+import { ReactDOM } from 'custom_modules/react';
 
 interface RouterType {
   element: (props?: any) => ReactDOM;
@@ -7,4 +7,4 @@ interface RouterType {
   exact?: boolean;
 }
 
-export { RouterType };
+export type { RouterType };

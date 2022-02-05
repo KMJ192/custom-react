@@ -1,12 +1,12 @@
 const debounceFrame = (callback: FrameRequestCallback) => {
   let nextFrameCallack = 0;
 
-  const nextExcution = () => {
+  const nextEexcution = () => {
     cancelAnimationFrame(nextFrameCallack);
     nextFrameCallack = requestAnimationFrame(callback);
   };
 
-  return nextExcution;
+  return nextEexcution;
 };
 
 export default debounceFrame;

@@ -6,9 +6,10 @@
     "outDir": "dist",
     "paths": {
       "@src/*": ["src/*"],
-      "@react/*": ["react/*"],
-      "@router/*": ["router/*"],
-      "@api/*": ["api/*"]
+      "@react/*": ["custom_modules/react/*"],
+      "@router/*": ["custom_modules/router/*"],
+      "@api/*": ["custom_modules/api/*"],
+      "@redux/*": ["custom_modules/redux/*"],
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext", "ES2015"],

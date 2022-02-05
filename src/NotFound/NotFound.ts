@@ -1,4 +1,4 @@
-import { ReactDOM } from '@react/React';
+import { ReactDOM } from 'custom_modules/react';
 
 function NotFound(): ReactDOM {
   return {

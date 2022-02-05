@@ -1,7 +1,8 @@
+declare module '@src';
 declare module '@react';
 declare module '@router';
-declare module '@src';
 declare module '@api';
+declare module '@redux';
 
 declare module '*.module.css' {
   const classes: { [key: string]: string };

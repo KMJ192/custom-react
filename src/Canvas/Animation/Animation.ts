@@ -157,4 +157,4 @@ class Animation {
 }
 
 export default Animation;
-//https://velog.io/@kimbyungchan/canvas-animation
+// https://velog.io/@kimbyungchan/canvas-animation

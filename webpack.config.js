@@ -3,8 +3,6 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-// const isProd = process.env.NODE_ENV === 'PRODUCTION';
-
 const postcssLoader = {
   loader: 'postcss-loader',
   options: {
@@ -20,9 +18,10 @@ module.exports = {
     extensions: ['.js', '.ts'],
     alias: {
       '@src': path.resolve(__dirname, 'src'),
-      '@react': path.resolve(__dirname, 'react'),
-      '@router': path.resolve(__dirname, 'router'),
-      '@api': path.resolve(__dirname, 'api'),
+      '@react': path.resolve(__dirname, 'custom_modules/react'),
+      '@router': path.resolve(__dirname, 'custom_modules/router'),
+      '@api': path.resolve(__dirname, 'custom_modules/api'),
+      '@redux': path.resolve(__dirname, 'custom_modules/redux'),
     },
   },
   module: {

@@ -3,4 +3,4 @@ interface Api {
   useGlobalUrl: (url: string) => void;
 }
 
-export { Api };
+export type { Api };

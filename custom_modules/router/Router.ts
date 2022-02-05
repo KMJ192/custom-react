@@ -1,6 +1,6 @@
 import React from '@react';
-import { ReactDOM } from '@react/React';
-import { RouterType } from './types';
+import type { ReactDOM } from 'custom_modules/react';
+import type { RouterType } from './types';
 
 const Router = (function () {
   let query: { [key: string]: string } = {};
@@ -66,5 +66,5 @@ const Router = (function () {
   };
 })();
 
-export default Router;
 export const { useRouter, useRedirection, useParam } = Router;
+export default Router;
