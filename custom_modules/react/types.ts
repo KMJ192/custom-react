@@ -5,6 +5,10 @@ interface ReactType {
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
   useDocument(event: () => void): void;
+  useStateNoRender<T>(initState: T): [T, (newVal: T) => void];
+  useStateNoRender<T = undefined>(
+    initState?: T,
+  ): [T | undefined, (newVal: T | undefined) => void];
 }
 
 interface ReactClosureOptions {

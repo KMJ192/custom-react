@@ -14,6 +14,10 @@ const React: ReactType = (function () {
     },
   };
 
+  /**
+   * 컴포넌트 렌더링 기능
+   * requestAnimationFrame으로 렌더링 횟수 제한
+   */
   const reactRenderer = debounceFrame(() => {
     const { root, component } = _this;
     if (!root || !component) return;
@@ -24,6 +28,11 @@ const React: ReactType = (function () {
     _this.injected.unmount = _this.injected.event();
   });
 
+  /**
+   * 상태관리 시스템
+   * @param initState - 제너릭 타입 상태 및 상태 업데이트 기능 제공
+   * @returns [state, setState] - 상태, 상태 업데이트 함수
+   */
   function useState<T = undefined>(initState: T): [T, (newVal: T) => void] {
     const { states, stateKey: key } = _this;
     if (states.length === key) states.push(initState);
@@ -39,6 +48,32 @@ const React: ReactType = (function () {
     return [state, setState];
   }
 
+  /**
+   * 상태관리 시스템, 렌더링을 진행하지 않음
+   * @param initState - 제너릭 타입 상태 및 상태 업데이트 기능 제공
+   * @returns [state, setState] - 상태, 상태 업데이트 함수
+   */
+  function useStateNoRender<T = undefined>(
+    initState: T,
+  ): [T, (newVal: T) => void] {
+    const { states, stateKey: key } = _this;
+    if (states.length === key) states.push(initState);
+    const state = states[key];
+    const setState = (newState: T) => {
+      if (newState === state) return;
+      if (JSON.stringify(newState) === JSON.stringify(state)) return;
+
+      states[key] = newState;
+    };
+    _this.stateKey += 1;
+    return [state, setState];
+  }
+
+  /**
+   * 컴포넌트의 생명주기를 관리
+   * @param effect - mount, update, unmount 컴포넌트 생명주기 관리
+   * @param depsArray - 상태 비교를 위한 deps
+   */
   function useEffect(effect: () => any, depsArray?: any[]) {
     const { states, stateKey: currStateKey } = _this;
 
@@ -55,16 +90,28 @@ const React: ReactType = (function () {
     _this.stateKey++;
   }
 
+  /**
+   * 컴포넌트에서 document api를 사용하여 커스터마이징 로직 작성 지원
+   * @param event
+   */
   function useDocument(event: () => any) {
     _this.injected.event = event;
   }
 
-  function render(component: () => ReactDOM[], rootEle: Element | null) {
+  /**
+   * React 받아온 컴포넌트를 클로저에 저장 후 렌더링 실행
+   * @param component - React 컴포넌트
+   * @param rootElement - root 노드
+   */
+  function render(component: () => ReactDOM[], rootElement: Element | null) {
     _this.component = component;
-    _this.root = rootEle;
+    _this.root = rootElement;
     reactRenderer();
   }
 
+  /**
+   * Routing시 렌더링 실행
+   */
   function routeRender() {
     _this.states = [];
     if (_this.unmount) {
@@ -80,11 +127,12 @@ const React: ReactType = (function () {
     useState,
     useEffect,
     useDocument,
+    useStateNoRender,
     render,
     routeRender,
   };
 })();
 
-export const { useState, useEffect, useDocument } = React;
+export const { useState, useEffect, useDocument, useStateNoRender } = React;
 export { ReactDOM };
 export default React;

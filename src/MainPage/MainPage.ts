@@ -27,7 +27,6 @@ function MainPage() {
     }
     return () => {
       if (input) {
-        console.log(1);
         input.removeEventListener('input', onChange);
       }
     };
