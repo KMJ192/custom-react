@@ -2,6 +2,9 @@ import { ReactType, ReactClosureOptions, ReactDOM } from './types';
 import { createDOM, debounceFrame } from './untils/untils';
 
 const React: ReactType = (function () {
+  /**
+   * React 클로저 옵션
+   */
   const _this: ReactClosureOptions = {
     stateKey: 0,
     states: [],
