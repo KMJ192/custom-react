@@ -1,4 +1,11 @@
-import { ReactType, ReactClosureOptions, ReactDOM } from './types';
+import { ActionType } from '@redux/types';
+import {
+  ReactType,
+  ReactClosureOptions,
+  ReactDOM,
+  ProviderType,
+  isProvider,
+} from './types';
 import { createDOM, debounceFrame } from './untils/untils';
 
 const React: ReactType = (function () {
@@ -6,15 +13,25 @@ const React: ReactType = (function () {
    * React 클로저 옵션
    */
   const _this: ReactClosureOptions = {
-    stateKey: 0,
+    // state 배열
     states: [],
+    // state 배열 index
+    stateKey: 0,
+    // root 노드
     root: null,
+    // react 컴포넌트
     component: null,
-    unmount: undefined,
+    // useEffect unmount 함수
+    componentUnmount: undefined,
+    // dom api를 사용하는 공간
     injected: {
       event: () => {},
       unmount: undefined,
     },
+    // redux store
+    store: undefined,
+    // redux state
+    reduxState: undefined,
   };
 
   /**
@@ -87,7 +104,7 @@ const React: ReactType = (function () {
       ? !depsArray?.every((el: any, i: number) => el === deps[i])
       : true;
     if (hasNoDeps || hasChangedDeps) {
-      _this.unmount = effect();
+      _this.componentUnmount = effect();
       states[currStateKey] = depsArray;
     }
     _this.stateKey++;
@@ -102,12 +119,50 @@ const React: ReactType = (function () {
   }
 
   /**
+   * redux의 dispatch를 사용하게 하는 hook
+   * @returns (action: ActionType) => void;
+   */
+  function useDispatch(type: string) {
+    if (!_this.store) return;
+    return (action?: ActionType) => {
+      _this.store.dispatch(type)(action);
+      reactRenderer();
+    };
+  }
+
+  /**
+   * redux의 상태를 반환하는 hook
+   * @returns redux state
+   */
+  function useSelector(selector: (state: any) => any) {
+    return selector(_this.reduxState);
+  }
+
+  /**
    * React 받아온 컴포넌트를 클로저에 저장 후 렌더링 실행
    * @param component - React 컴포넌트
    * @param rootElement - root 노드
    */
-  function render(component: () => ReactDOM[], rootElement: Element | null) {
-    _this.component = component;
+  function render(
+    component: () => ReactDOM[] | ProviderType,
+    rootElement: Element | null,
+  ) {
+    if (isProvider(component)) {
+      // redux store를 포함한 provider 타입
+      _this.store = component.store;
+      _this.component = component.reactApp;
+      _this.reduxState = _this.store.reduxState();
+
+      // redux 구독
+      _this.store.subscribe(() => {
+        _this.reduxState = _this.store.reduxState();
+      });
+    } else {
+      // 일반 ReactDOM 타입
+      _this.component = component as unknown as
+        | (() => ReactDOM[])
+        | (() => ReactDOM);
+    }
     _this.root = rootElement;
     reactRenderer();
   }
@@ -117,8 +172,8 @@ const React: ReactType = (function () {
    */
   function routeRender() {
     _this.states = [];
-    if (_this.unmount) {
-      _this.unmount();
+    if (_this.componentUnmount) {
+      _this.componentUnmount();
     }
     if (_this.injected.unmount) {
       _this.injected.unmount();
@@ -131,11 +186,20 @@ const React: ReactType = (function () {
     useEffect,
     useDocument,
     useStateNoRender,
+    useDispatch,
+    useSelector,
     render,
     routeRender,
   };
 })();
 
-export const { useState, useEffect, useDocument, useStateNoRender } = React;
+export const {
+  useState,
+  useEffect,
+  useDocument,
+  useStateNoRender,
+  useDispatch,
+  useSelector,
+} = React;
 export { ReactDOM };
 export default React;

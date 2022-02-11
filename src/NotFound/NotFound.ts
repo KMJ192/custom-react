@@ -1,10 +1,7 @@
-import { ReactDOM } from 'custom_modules/react';
-
-function NotFound(): ReactDOM {
-  return {
-    tagName: 'div',
-    childNode: 'Not Found',
-  };
+function NotFound() {
+  return `
+    <div>Not Found</div>
+  `;
 }
 
 export default NotFound;

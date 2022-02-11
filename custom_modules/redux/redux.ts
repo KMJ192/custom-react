@@ -1,10 +1,4 @@
-import {
-  StateType,
-  ReducerType,
-  StoreType,
-  Reducers,
-  ActionType,
-} from './types';
+import { StateType, Reducers, ActionType } from './types';
 
 // actionCreator
 const actionCreator =
@@ -14,39 +8,83 @@ const actionCreator =
     payload,
   });
 
+// Reducer combining
 const combineReducers = (reducers: Reducers) => {
   return reducers;
 };
 
+// redux
 const redux = (function () {
-  let state;
-  let stateKey = 0;
+  // redux state
+  let state: { [key: string]: any };
+
+  // reducer 함수
   let reducers: Reducers;
-  let handlers = [];
-  let dp: (action: ActionType) => void;
+
+  // redux 구독시에 대한 로직 배열
+  const handlers: any = [];
+
+  // reducer initalState 초기화를 위한 더미 데이어
+  const initAction = {
+    type: '',
+  };
+
+  /**
+   * reducer를 받아와서
+   * @param rootReducer - Combined reducers
+   */
   function createStore(rootReducer: Reducers) {
     reducers = rootReducer;
+    for (const [reducerName, reducer] of Object.entries(reducers)) {
+      reducers = {
+        ...reducers,
+        [reducerName]: reducer,
+      };
+      state = {
+        ...state,
+        [reducerName]: reducer(undefined, initAction),
+      };
+    }
 
-    function dispatch(action: ActionType) {}
+    /**
+     * redux 구독
+     * @param handler - 실행할 함수
+     */
+    function subscribe(handler: any) {
+      handlers.push(handler);
+    }
 
-    function subscribe() {}
+    /**
+     * 새로운 action dispatch
+     * @param type - dispatch할 대상
+     * @param action - 갱신할 상태에 대한 action
+     */
+    const dispatch = (type: string) => (action: ActionType) => {
+      state = {
+        ...state,
+        [type]: reducers[type](state[type], action),
+      };
+      handlers.forEach((handler: any) => {
+        handler();
+      });
+    };
 
-    dp = dispatch;
+    /**
+     * redux의 상태를 반환
+     * @returns state
+     */
+    function reduxState() {
+      return state;
+    }
+
+    return { subscribe, dispatch, reduxState };
   }
-
-  function useDispatch() {
-    return dp;
-  }
-
-  function useSelector() {}
 
   return {
     createStore,
-    useDispatch,
-    useSelector,
   };
 })();
 
 export { actionCreator, combineReducers };
-export const { createStore, useDispatch, useSelector } = redux;
+export const { createStore } = redux;
 export default redux;

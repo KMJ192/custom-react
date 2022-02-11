@@ -13,7 +13,7 @@ const postcssLoader = {
 };
 
 module.exports = {
-  entry: './index.ts',
+  entry: './src/index.ts',
   resolve: {
     extensions: ['.js', '.ts'],
     alias: {

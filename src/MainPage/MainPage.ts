@@ -1,4 +1,6 @@
-import { useState, useDocument } from '@react';
+import { useState, useDocument, useDispatch, useSelector } from '@react';
+import { useRedirection } from '@router';
+import { COUNT_REDUX_TYPE, increase, decrease } from '@src/store/count';
 // import Animation from '@src/Canvas/Animation';
 
 function MainPage() {
@@ -45,21 +47,27 @@ function MainPage() {
   //     },
   //   },
   // ];
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
+  const dispatch = useDispatch(COUNT_REDUX_TYPE);
+  const count = useSelector((state: any) => state.count.count);
 
   useDocument(() => {
     const inc = document.getElementById('increase');
     const dec = document.getElementById('decrease');
     const increament = () => {
-      setCount(count + 1);
+      dispatch(increase());
     };
     const decreament = () => {
-      setCount(count - 1);
+      dispatch(decrease());
     };
     if (inc && dec) {
       inc.addEventListener('click', increament);
       dec.addEventListener('click', decreament);
     }
+    const move = document.getElementById('move');
+    move?.addEventListener('click', () => {
+      useRedirection('/test');
+    });
     return () => {
       if (inc && dec) {
         inc.removeEventListener('click', increament);
@@ -72,6 +80,7 @@ function MainPage() {
     <div>${count}</div>
     <button id='increase'>증가</button>
     <button id='decrease'>감소</button>
+    <button id='move'>이동</button>
   `;
 }
 

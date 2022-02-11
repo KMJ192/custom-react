@@ -1,3 +1,5 @@
+import { Reducers } from '@redux/types';
+
 interface ReactType {
   useState<T>(initState: T): [T, (newVal: T) => void];
   useState<T = undefined>(
@@ -9,6 +11,8 @@ interface ReactType {
   useStateNoRender<T = undefined>(
     initState?: T,
   ): [T | undefined, (newVal: T | undefined) => void];
+  useDispatch: (type: string) => void;
+  useSelector: (selector: (state: Reducers) => any) => any;
 }
 
 interface ReactClosureOptions {
@@ -16,11 +20,13 @@ interface ReactClosureOptions {
   stateKey: number;
   states: any[];
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
-  unmount?: () => void;
+  componentUnmount?: () => void;
   injected: {
     event: () => any;
     unmount?: () => void;
   };
+  store?: any;
+  reduxState?: { [key: string]: any };
 }
 
 interface ReactDOM {
@@ -44,4 +50,13 @@ interface ReactDOM {
   node?: HTMLElement;
 }
 
-export { ReactType, ReactClosureOptions, ReactDOM };
+interface ProviderType {
+  store: any;
+  reactApp: (() => ReactDOM) | (() => ReactDOM[]);
+}
+
+function isProvider(arg: any): arg is ProviderType {
+  return arg.length === undefined && arg.tagName === undefined;
+}
+
+export { ReactType, ReactClosureOptions, ReactDOM, ProviderType, isProvider };

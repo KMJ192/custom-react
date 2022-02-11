@@ -1,3 +1,2 @@
-export { default } from './redux';
-export * from './redux';
+export * from './Redux';
 export * from './types';

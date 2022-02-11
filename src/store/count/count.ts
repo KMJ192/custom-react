@@ -1,9 +1,12 @@
 import { actionCreator } from '@redux';
 import type { ActionType } from '@redux/types';
 
+export const COUNT_REDUX_TYPE = 'count';
+
 export const INCREASE = 'increase';
 export const DECREASE = 'decrease';
-export const INCREASE_DIFF = 'increase_five';
+export const INCREASE_DIFF = 'increase_diff';
+export const DECREASE_DIFF = 'decrease_diff';
 export const RESET = 'reset';
 
 export const increase = actionCreator(INCREASE);
@@ -15,9 +18,9 @@ const initCount = { count: 0 };
 
 function countReducer(
   state: { count: number } = initCount,
-  action?: ActionType,
+  action: ActionType,
 ) {
-  switch (action?.type) {
+  switch (action.type) {
     case INCREASE:
       return {
         ...state,
@@ -32,6 +35,11 @@ function countReducer(
       return {
         ...state,
         count: state.count + action.payload,
+      };
+    case DECREASE_DIFF:
+      return {
+        ...state,
+        count: state.count - action.payload,
       };
     case RESET:
       return {
