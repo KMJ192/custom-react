@@ -13,7 +13,9 @@ const combineReducers = (reducers: Reducers) => {
   return reducers;
 };
 
-// redux
+/**
+ * redux
+ */
 const redux = (function () {
   // redux state
   let state: { [key: string]: any };
@@ -30,7 +32,7 @@ const redux = (function () {
   };
 
   /**
-   * reducer를 받아와서
+   * reducer에 대한 store 생성
    * @param rootReducer - Combined reducers
    */
   function createStore(rootReducer: Reducers) {
