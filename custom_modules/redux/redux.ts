@@ -14,7 +14,7 @@ const combineReducers = (reducers: Reducers) => {
 };
 
 /**
- * redux
+ * redux - 전역 상태관리 시스템
  */
 const redux = (function () {
   // redux state
