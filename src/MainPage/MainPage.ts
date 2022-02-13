@@ -1,12 +1,20 @@
 import { useState, useDocument, useDispatch, useSelector } from '@react';
 import { useRedirection } from '@router';
+import { useRequest } from '@api/Api';
 import { COUNT_REDUX_TYPE, increase, decrease } from '@src/store/count';
 import {
   COUNT2_REDUX_TYPE,
   increase as increase2,
   decrease as decrease2,
 } from '@src/store/count2';
+
+import { REQUEST_REDUX_TYPE } from '@src/store/request';
 // import Animation from '@src/Canvas/Animation';
+
+import classNames from 'classnames/bind';
+import style from './MainPage.module.scss';
+import { requestMiddleware } from '@src/store/request/middleware';
+const cx = classNames.bind(style);
 
 function MainPage() {
   // useDocument(() => {
@@ -53,9 +61,11 @@ function MainPage() {
   //   },
   // ];
   // const [count, setCount] = useState(0);
+
   const dispatch = useDispatch(COUNT_REDUX_TYPE);
   const dispatch2 = useDispatch(COUNT2_REDUX_TYPE);
-  const count = useSelector((state: any) => state);
+  const request = useDispatch(REQUEST_REDUX_TYPE);
+  const state = useSelector((state: any) => state);
 
   useDocument(() => {
     const inc = document.getElementById('increase');
@@ -88,6 +98,15 @@ function MainPage() {
       dec2.addEventListener('click', decreament2);
     }
 
+    const asyncBtn = document.getElementById('async');
+    const apiCall = () => {};
+
+    if (asyncBtn) {
+      asyncBtn.addEventListener('click', apiCall);
+    }
+
+    const loadingText = document.getElementById('loading');
+
     return () => {
       if (inc && dec && inc2 && dec2) {
         inc.removeEventListener('click', increament);
@@ -95,17 +114,21 @@ function MainPage() {
 
         inc2.removeEventListener('click', increament2);
         dec2.removeEventListener('click', decreament2);
+
+        // asyncBtn.removeEventListener('click', apiCall);
       }
     };
   });
 
   return `
-    <div>${count.count.count}</div>
-    <div>${count.count2.count}</div>
+    <div>${state.count.count}</div>
+    <div>${state.count2.count}</div>
+    <p id='${cx('loading')}'>로딩</p>
     <button id='increase'>증가</button>
     <button id='decrease'>감소</button>
     <button id='increase2'>증가2</button>
     <button id='decrease2'>감소2</button>
+    <button id='async'>비동기 호출</button>
     <button id='move'>이동</button>
 
   `;

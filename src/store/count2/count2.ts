@@ -14,7 +14,7 @@ export const decrease = actionCreator(DECREASE);
 export const increase_diff = actionCreator(INCREASE_DIFF);
 export const reset = actionCreator(RESET);
 
-const initCount = { count: 1 };
+const initCount = { count: 0 };
 
 function countReducer(
   state: { count: number } = initCount,

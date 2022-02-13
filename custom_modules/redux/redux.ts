@@ -1,17 +1,35 @@
 import { StateType, Reducers, ActionType } from './types';
+import { useDispatch } from '@react/React';
 
 // actionCreator
 const actionCreator =
   (type: string) =>
-  (payload: any): StateType => ({
+  (payload: { [key: string]: any }): StateType => ({
     type,
     payload,
   });
+
+const createAsyncAction = (
+  request: string,
+  response: string,
+  error: string,
+) => {
+  return {
+    request: actionCreator(request),
+    success: actionCreator(response),
+    failure: actionCreator(error),
+  };
+};
 
 // Reducer combining
 const combineReducers = (reducers: Reducers) => {
   return reducers;
 };
+
+// middleware array return
+function applyMiddleware(...middlewares: any) {
+  return middlewares;
+}
 
 /**
  * redux - 전역 상태관리 시스템
@@ -35,7 +53,7 @@ const redux = (function () {
    * reducer에 대한 store 생성
    * @param rootReducer - Combined reducers
    */
-  function createStore(rootReducer: Reducers) {
+  const createStore = (rootReducer: Reducers, middlewares: Array<any> = []) => {
     reducers = rootReducer;
     for (const [reducerName, reducer] of Object.entries(reducers)) {
       reducers = {
@@ -52,9 +70,9 @@ const redux = (function () {
      * redux 구독
      * @param handler - 실행할 함수
      */
-    function subscribe(handler: any) {
+    const subscribe = (handler: any) => {
       handlers.push(handler);
-    }
+    };
 
     /**
      * 새로운 action dispatch
@@ -62,6 +80,7 @@ const redux = (function () {
      * @param action - 갱신할 상태에 대한 action
      */
     const dispatch = (type: string) => (action: ActionType) => {
+      console.log(type, action);
       state = {
         ...state,
         [type]: reducers[type](state[type], action),
@@ -69,24 +88,32 @@ const redux = (function () {
       handlers.forEach((handler: any) => {
         handler();
       });
+      console.log(state[type]);
     };
 
     /**
      * redux의 상태를 반환
      * @returns state
      */
-    function reduxState() {
+    const reduxState = () => {
       return state;
-    }
+    };
+    const store = { subscribe, dispatch, reduxState };
 
-    return { subscribe, dispatch, reduxState };
-  }
+    middlewares.forEach((middleware) => {
+      Object.values(middleware()).forEach((m: any) => {
+        m()(dispatch);
+      });
+    });
+
+    return store;
+  };
 
   return {
     createStore,
   };
 })();
 
-export { actionCreator, combineReducers };
+export { actionCreator, createAsyncAction, combineReducers, applyMiddleware };
 export const { createStore } = redux;
 export default redux;

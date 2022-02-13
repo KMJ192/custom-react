@@ -119,7 +119,7 @@ const React: ReactType = (function () {
   }
 
   /**
-   * redux의 dispatch를 사용하게 하는 hook
+   * redux에 상태를 dispatch할 수 있도록 하는 hook
    * @returns (action: ActionType) => void;
    */
   function useDispatch(type: string) {

@@ -1,4 +1,9 @@
-type StateType = { [key: string]: any };
+type StateType = {
+  type: string;
+  payload: {
+    [key: string]: any;
+  };
+};
 
 interface ActionType {
   type: string;
@@ -6,6 +11,7 @@ interface ActionType {
 }
 
 type ReducerType = (state: any, action: ActionType) => any;
+
 type Reducers = { [key: string]: ReducerType };
 
-export { StateType, Reducers, ActionType };
+export { StateType, Reducers, ActionType, ReducerType };

@@ -17,7 +17,7 @@ function TestComponent() {
       const resetDispatch = () => {
         dispatch1(reset());
       };
-      reset2Btn.addEventListener('click', resetDispatch);
+      reset1Btn.addEventListener('click', resetDispatch);
     }
 
     if (reset2Btn) {
