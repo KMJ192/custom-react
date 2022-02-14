@@ -99,7 +99,9 @@ function MainPage() {
     }
 
     const asyncBtn = document.getElementById('async');
-    const apiCall = () => {};
+    const apiCall = () => {
+      requestMiddleware();
+    };
 
     if (asyncBtn) {
       asyncBtn.addEventListener('click', apiCall);
@@ -108,14 +110,14 @@ function MainPage() {
     const loadingText = document.getElementById('loading');
 
     return () => {
-      if (inc && dec && inc2 && dec2) {
+      if (inc && dec && inc2 && dec2 && asyncBtn) {
         inc.removeEventListener('click', increament);
         dec.removeEventListener('click', decreament);
 
         inc2.removeEventListener('click', increament2);
         dec2.removeEventListener('click', decreament2);
 
-        // asyncBtn.removeEventListener('click', apiCall);
+        asyncBtn.removeEventListener('click', apiCall);
       }
     };
   });

@@ -80,7 +80,6 @@ const redux = (function () {
      * @param action - 갱신할 상태에 대한 action
      */
     const dispatch = (type: string) => (action: ActionType) => {
-      console.log(type, action);
       state = {
         ...state,
         [type]: reducers[type](state[type], action),
@@ -88,7 +87,6 @@ const redux = (function () {
       handlers.forEach((handler: any) => {
         handler();
       });
-      console.log(state[type]);
     };
 
     /**

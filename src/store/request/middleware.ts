@@ -5,6 +5,7 @@ import { asyncAction, REQUEST_REDUX_TYPE } from './request';
 
 function requestMiddleware() {
   return async (disp: (type: string) => (action?: ActionType) => void) => {
+    console.log(disp);
     const dispatch = disp(REQUEST_REDUX_TYPE);
     const { request, success, failure } = asyncAction;
     dispatch(request());

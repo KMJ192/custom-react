@@ -125,6 +125,7 @@ const React: ReactType = (function () {
   function useDispatch(type: string) {
     if (!_this.store) return;
     return (action?: ActionType) => {
+      console.log(action);
       _this.store.dispatch(type)(action);
       reactRenderer();
     };
