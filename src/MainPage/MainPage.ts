@@ -1,6 +1,5 @@
-import { useState, useDocument, useDispatch, useSelector } from '@react';
+import { useDocument, useDispatch, useSelector } from '@react';
 import { useRedirection } from '@router';
-import { useRequest } from '@api/Api';
 import { COUNT_REDUX_TYPE, increase, decrease } from '@src/store/count';
 import {
   COUNT2_REDUX_TYPE,
@@ -8,12 +7,11 @@ import {
   decrease as decrease2,
 } from '@src/store/count2';
 
-import { REQUEST_REDUX_TYPE } from '@src/store/request';
+import { requestMiddleware } from '@src/store/request/middleware';
 // import Animation from '@src/Canvas/Animation';
 
 import classNames from 'classnames/bind';
 import style from './MainPage.module.scss';
-import { requestMiddleware } from '@src/store/request/middleware';
 const cx = classNames.bind(style);
 
 function MainPage() {
@@ -64,8 +62,8 @@ function MainPage() {
 
   const dispatch = useDispatch(COUNT_REDUX_TYPE);
   const dispatch2 = useDispatch(COUNT2_REDUX_TYPE);
-  const request = useDispatch(REQUEST_REDUX_TYPE);
   const state = useSelector((state: any) => state);
+  // const state = undefined
 
   useDocument(() => {
     const inc = document.getElementById('increase');
@@ -108,6 +106,13 @@ function MainPage() {
     }
 
     const loadingText = document.getElementById('loading');
+    if (loadingText) {
+      if (state.request.loading === true) {
+        loadingText.innerText = '로딩 중...';
+      } else if (state.request.message) {
+        loadingText.innerText = state.request.message.result;
+      }
+    }
 
     return () => {
       if (inc && dec && inc2 && dec2 && asyncBtn) {
@@ -125,14 +130,13 @@ function MainPage() {
   return `
     <div>${state.count.count}</div>
     <div>${state.count2.count}</div>
-    <p id='${cx('loading')}'>로딩</p>
+    <p id='loading' class='${cx('loading')}'></p>
     <button id='increase'>증가</button>
     <button id='decrease'>감소</button>
     <button id='increase2'>증가2</button>
     <button id='decrease2'>감소2</button>
     <button id='async'>비동기 호출</button>
     <button id='move'>이동</button>
-
   `;
 }
 

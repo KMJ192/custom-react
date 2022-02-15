@@ -1,5 +1,6 @@
+import React, { useDispatch } from '@react';
+
 import { StateType, Reducers, ActionType } from './types';
-import { useDispatch } from '@react/React';
 
 // actionCreator
 const actionCreator =
@@ -49,6 +50,8 @@ const redux = (function () {
     type: '',
   };
 
+  let reduxStore: any;
+
   /**
    * reducer에 대한 store 생성
    * @param rootReducer - Combined reducers
@@ -80,6 +83,9 @@ const redux = (function () {
      * @param action - 갱신할 상태에 대한 action
      */
     const dispatch = (type: string) => (action: ActionType) => {
+      const newState = reducers[type](state[type], action);
+      if (state[type] === newState) return;
+      if (JSON.stringify(state[type]) === JSON.stringify(newState)) return;
       state = {
         ...state,
         [type]: reducers[type](state[type], action),
@@ -87,6 +93,7 @@ const redux = (function () {
       handlers.forEach((handler: any) => {
         handler();
       });
+      React.reduxRender();
     };
 
     /**
@@ -96,22 +103,23 @@ const redux = (function () {
     const reduxState = () => {
       return state;
     };
+
     const store = { subscribe, dispatch, reduxState };
 
-    middlewares.forEach((middleware) => {
-      Object.values(middleware()).forEach((m: any) => {
-        m()(dispatch);
-      });
-    });
-
+    reduxStore = store;
     return store;
   };
 
+  function dispatch(type: string) {
+    return reduxStore.dispatch(type);
+  }
+
   return {
     createStore,
+    dispatch,
   };
 })();
 
 export { actionCreator, createAsyncAction, combineReducers, applyMiddleware };
-export const { createStore } = redux;
+export const { createStore, dispatch } = redux;
 export default redux;

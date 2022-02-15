@@ -125,9 +125,7 @@ const React: ReactType = (function () {
   function useDispatch(type: string) {
     if (!_this.store) return;
     return (action?: ActionType) => {
-      console.log(action);
       _this.store.dispatch(type)(action);
-      reactRenderer();
     };
   }
 
@@ -182,6 +180,10 @@ const React: ReactType = (function () {
     reactRenderer();
   }
 
+  function reduxRender() {
+    reactRenderer();
+  }
+
   return {
     useState,
     useEffect,
@@ -191,6 +193,7 @@ const React: ReactType = (function () {
     useSelector,
     render,
     routeRender,
+    reduxRender,
   };
 })();
 
