@@ -22,10 +22,9 @@ const api: Api = (function () {
         return await response.json();
       }
     } catch (e) {
-      console.warn(`http request error : ${e}`);
-      return null;
+      throw e;
     }
-    return null;
+    return;
   }
 
   /**

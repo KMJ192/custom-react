@@ -1,23 +1,17 @@
-import { useRequest } from '@api/Api';
 import { dispatch } from '@redux';
-
+import { useRequest } from '@api/Api';
 import { asyncAction, REQUEST_REDUX_TYPE } from './request';
 
 async function requestMiddleware() {
-  const dis = dispatch(REQUEST_REDUX_TYPE);
+  const requestDispatch = dispatch(REQUEST_REDUX_TYPE);
   const { request, success, failure } = asyncAction;
-  dis(request());
+  requestDispatch(request());
   try {
-    const result = await requestApi();
-    dis(success(result));
+    const response = await useRequest('http://localhost:3001/redux-test');
+    requestDispatch(success(response));
   } catch (e) {
-    dis(failure());
+    requestDispatch(failure((e as any).message));
   }
-}
-
-async function requestApi() {
-  const response = await useRequest('http://58.226.169.200:3001/redux-test');
-  return response;
 }
 
 export { requestMiddleware };

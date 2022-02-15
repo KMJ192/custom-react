@@ -63,7 +63,6 @@ function MainPage() {
   const dispatch = useDispatch(COUNT_REDUX_TYPE);
   const dispatch2 = useDispatch(COUNT2_REDUX_TYPE);
   const state = useSelector((state: any) => state);
-  // const state = undefined
 
   useDocument(() => {
     const inc = document.getElementById('increase');
@@ -109,8 +108,10 @@ function MainPage() {
     if (loadingText) {
       if (state.request.loading === true) {
         loadingText.innerText = '로딩 중...';
-      } else if (state.request.message) {
+      } else if (state.request.message.result) {
         loadingText.innerText = state.request.message.result;
+      } else if (state.request.error) {
+        loadingText.innerText = state.request.error;
       }
     }
 

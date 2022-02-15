@@ -1,4 +1,4 @@
-import React, { useDispatch } from '@react';
+import React from '@react';
 
 import { StateType, Reducers, ActionType } from './types';
 
@@ -27,11 +27,6 @@ const combineReducers = (reducers: Reducers) => {
   return reducers;
 };
 
-// middleware array return
-function applyMiddleware(...middlewares: any) {
-  return middlewares;
-}
-
 /**
  * redux - 전역 상태관리 시스템
  */
@@ -56,7 +51,7 @@ const redux = (function () {
    * reducer에 대한 store 생성
    * @param rootReducer - Combined reducers
    */
-  const createStore = (rootReducer: Reducers, middlewares: Array<any> = []) => {
+  const createStore = (rootReducer: Reducers) => {
     reducers = rootReducer;
     for (const [reducerName, reducer] of Object.entries(reducers)) {
       reducers = {
@@ -120,6 +115,6 @@ const redux = (function () {
   };
 })();
 
-export { actionCreator, createAsyncAction, combineReducers, applyMiddleware };
+export { actionCreator, createAsyncAction, combineReducers };
 export const { createStore, dispatch } = redux;
 export default redux;

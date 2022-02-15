@@ -32,7 +32,7 @@ function request(state = initState, action: ActionType) {
       return {
         ...state,
         loading: false,
-        message: action.payload,
+        error: action.payload,
       };
     default:
       return state;
