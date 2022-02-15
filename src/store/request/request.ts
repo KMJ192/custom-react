@@ -1,4 +1,5 @@
 import { createAsyncAction } from '@redux';
+import { RequestType } from './types';
 import type { ActionType } from '@redux/types';
 
 export const REQUEST_REDUX_TYPE = 'request';
@@ -9,13 +10,13 @@ export const ERROR = 'error';
 
 export const asyncAction = createAsyncAction(REQUEST, RESPONSE, ERROR);
 
-const initState = {
+const initState: RequestType = {
   message: '',
   loading: false,
   error: '',
 };
 
-function request(state = initState, action: ActionType) {
+function request(state = initState, action: ActionType): RequestType {
   switch (action.type) {
     case REQUEST:
       return {

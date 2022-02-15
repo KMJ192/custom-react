@@ -7,7 +7,7 @@ import {
   decrease as decrease2,
 } from '@src/store/count2';
 
-import { requestMiddleware } from '@src/store/request/middleware';
+import { asyncRequest } from '@src/store/request';
 // import Animation from '@src/Canvas/Animation';
 
 import classNames from 'classnames/bind';
@@ -97,7 +97,7 @@ function MainPage() {
 
     const asyncBtn = document.getElementById('async');
     const apiCall = () => {
-      requestMiddleware();
+      asyncRequest();
     };
 
     if (asyncBtn) {

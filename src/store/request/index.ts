@@ -5,3 +5,5 @@ export {
   RESPONSE,
   asyncAction,
 } from './request';
+export { asyncRequest } from './asyncRequest';
+export * from './types';

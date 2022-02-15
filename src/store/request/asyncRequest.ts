@@ -2,7 +2,7 @@ import { dispatch } from '@redux';
 import { useRequest } from '@api/Api';
 import { asyncAction, REQUEST_REDUX_TYPE } from './request';
 
-async function requestMiddleware() {
+async function asyncRequest() {
   const requestDispatch = dispatch(REQUEST_REDUX_TYPE);
   const { request, success, failure } = asyncAction;
   requestDispatch(request());
@@ -14,4 +14,4 @@ async function requestMiddleware() {
   }
 }
 
-export { requestMiddleware };
+export { asyncRequest };

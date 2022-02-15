@@ -2,7 +2,7 @@ import React from '@react';
 
 import { StateType, Reducers, ActionType } from './types';
 
-// actionCreator
+// Action creator
 const actionCreator =
   (type: string) =>
   (payload: { [key: string]: any }): StateType => ({
@@ -10,6 +10,7 @@ const actionCreator =
     payload,
   });
 
+// 비동기 Action creator
 const createAsyncAction = (
   request: string,
   response: string,
@@ -88,7 +89,8 @@ const redux = (function () {
       handlers.forEach((handler: any) => {
         handler();
       });
-      React.reduxRender();
+      // redux 상태 변경에 대한 react rerendering
+      React.reduxRenderer();
     };
 
     /**
@@ -105,6 +107,11 @@ const redux = (function () {
     return store;
   };
 
+  /**
+   * redux store의 dispatch를 사용
+   * @param type dispatch 대상
+   * @returns
+   */
   function dispatch(type: string) {
     return reduxStore.dispatch(type);
   }

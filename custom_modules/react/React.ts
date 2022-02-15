@@ -180,7 +180,7 @@ const React: ReactType = (function () {
     reactRenderer();
   }
 
-  function reduxRender() {
+  function reduxRenderer() {
     reactRenderer();
   }
 
@@ -193,7 +193,7 @@ const React: ReactType = (function () {
     useSelector,
     render,
     routeRender,
-    reduxRender,
+    reduxRenderer,
   };
 })();
 
