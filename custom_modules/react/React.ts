@@ -169,7 +169,7 @@ const React: ReactType = (function () {
   /**
    * Routing시 렌더링 실행
    */
-  function routeRender() {
+  function routeRenderer() {
     _this.states = [];
     if (_this.componentUnmount) {
       _this.componentUnmount();
@@ -192,7 +192,7 @@ const React: ReactType = (function () {
     useDispatch,
     useSelector,
     render,
-    routeRender,
+    routeRenderer,
     reduxRenderer,
   };
 })();

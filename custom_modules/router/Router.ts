@@ -67,7 +67,7 @@ const Router = (function () {
    */
   function useRedirection(url: string, data?: { [key: string]: string }) {
     history.pushState(data, '', url);
-    React.routeRender();
+    React.routeRenderer();
   }
 
   /**
