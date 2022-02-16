@@ -32,3 +32,7 @@
 - DOM에 변화가 생길경우 위의 Rendering과정이 반복된다.
 - 이에따라 DOM조작이 많이 발생하는데, 그때마다 위의 Rendering과정을 거치게 될 것이고, 이는 비효율 적인 작업이다.
 - Virtual DOM을 이용한다면 그 내용을 Real DOM에 적용하기 전 Virtual DOM에 먼저 적용시킨 후 최종 결과를 RealDOM에 전달하므로 브라우저상에서 발생하는 연산의 양을 줄이는데 도움이 된다.
+
+### Redux
+1. 전역 상태 관리 시스템
+2. closure, curring 기법을 활용하여 redux시스템을 구축한다.
