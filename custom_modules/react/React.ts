@@ -4,9 +4,8 @@ import {
   ReactClosureOptions,
   ReactDOM,
   ProviderType,
-  isProvider,
 } from './types';
-import { createDOM, debounceFrame } from './untils/untils';
+import { createDOM, debounceFrame, isProvider } from './utils';
 
 const React: ReactType = (function () {
   /**
@@ -143,7 +142,7 @@ const React: ReactType = (function () {
    * @param rootElement - root 노드
    */
   function render(
-    component: () => ReactDOM[] | ProviderType,
+    component: () => ReactDOM[] | (() => ReactDOM) | ProviderType,
     rootElement: Element | null,
   ) {
     if (isProvider(component)) {

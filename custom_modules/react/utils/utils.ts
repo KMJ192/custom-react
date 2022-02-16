@@ -1,5 +1,10 @@
-import type { ReactDOM } from '../types';
+import type { ReactDOM, ProviderType } from '../types';
 
+/**
+ * virtual dom을 real dom으로 적용 (재귀적으로 동작)
+ * @param node - 부모노드
+ * @param dom - virtual dom
+ */
 const makeNode = (node: HTMLElement, dom?: ReactDOM) => {
   if (!dom) {
     return;
@@ -50,6 +55,11 @@ const makeNode = (node: HTMLElement, dom?: ReactDOM) => {
   }
 };
 
+/**
+ * virtual dom을 real dom에 적용 (재귀적으로 동작)
+ * @param node - 부모노드
+ * @param dom - virtual dom
+ */
 export const createDOM = (
   node: HTMLElement,
   dom?: ReactDOM[] | ReactDOM | string | null,
@@ -74,6 +84,11 @@ export const createDOM = (
   makeNode(node, dom);
 };
 
+/**
+ * 연속 rerendering 방지
+ * @param callback - 실행 callback함수
+ * @returns 다음 호출
+ */
 export const debounceFrame = (callback: FrameRequestCallback) => {
   let nextFrameCallack = 0;
 
@@ -84,3 +99,12 @@ export const debounceFrame = (callback: FrameRequestCallback) => {
 
   return nextEexcution;
 };
+
+/**
+ * store 존재 유무 파악
+ * @param arg - react 컴포넌트 객체
+ * @returns - store 포함 유무 반환
+ */
+export function isProvider(arg: any): arg is ProviderType {
+  return arg.length === undefined && arg.tagName === undefined;
+}

@@ -55,8 +55,4 @@ interface ProviderType {
   reactApp: (() => ReactDOM) | (() => ReactDOM[]);
 }
 
-function isProvider(arg: any): arg is ProviderType {
-  return arg.length === undefined && arg.tagName === undefined;
-}
-
-export { ReactType, ReactClosureOptions, ReactDOM, ProviderType, isProvider };
+export { ReactType, ReactClosureOptions, ReactDOM, ProviderType };
