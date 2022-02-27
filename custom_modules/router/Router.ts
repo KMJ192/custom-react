@@ -37,7 +37,7 @@ const Router = (function () {
         return element();
       }
 
-      if (queryString) {
+      if (queryString === true) {
         const nowPath = pathname.split('/');
         const objPath = path.split('/');
         if (nowPath.length === objPath.length) {
