@@ -92,12 +92,12 @@ export const createDOM = (
 export const debounceFrame = (callback: FrameRequestCallback) => {
   let nextFrameCallack = 0;
 
-  const nextEexcution = () => {
+  const nextExecution = () => {
     cancelAnimationFrame(nextFrameCallack);
     nextFrameCallack = requestAnimationFrame(callback);
   };
 
-  return nextEexcution;
+  return nextExecution;
 };
 
 /**
