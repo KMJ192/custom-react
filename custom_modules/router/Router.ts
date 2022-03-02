@@ -28,7 +28,7 @@ const Router = (function () {
 
     const { pathname } = location;
     if (pathname === '/') return MainPage();
-    
+
     for (const component of components) {
       const { exact, path, element, queryString } = component;
       if (queryString === true) {
