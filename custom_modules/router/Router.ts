@@ -28,15 +28,9 @@ const Router = (function () {
 
     const { pathname } = location;
     if (pathname === '/') return MainPage();
+    
     for (const component of components) {
       const { exact, path, element, queryString } = component;
-      if (
-        (exact === true && pathname === path) ||
-        (!exact && pathname.indexOf(path) >= 0)
-      ) {
-        return element();
-      }
-
       if (queryString === true) {
         const nowPath = pathname.split('/');
         const objPath = path.split('/');
@@ -55,6 +49,14 @@ const Router = (function () {
           return element();
         }
       }
+
+      if (
+        (exact === true && pathname === path) ||
+        (!exact && pathname.indexOf(path) >= 0)
+      ) {
+        return element();
+      }
+
     }
 
     return NotFound();
