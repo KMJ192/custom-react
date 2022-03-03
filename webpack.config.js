@@ -22,6 +22,7 @@ module.exports = {
       '@router': path.resolve(__dirname, 'custom_modules/router'),
       '@api': path.resolve(__dirname, 'custom_modules/api'),
       '@redux': path.resolve(__dirname, 'custom_modules/redux'),
+      '@storage': path.resolve(__dirname, 'custom_modules/storage'),
     },
   },
   module: {

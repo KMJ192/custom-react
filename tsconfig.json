@@ -10,6 +10,7 @@
       "@router/*": ["custom_modules/router/*"],
       "@api/*": ["custom_modules/api/*"],
       "@redux/*": ["custom_modules/redux/*"],
+      "@storage/*": ["custom_modules/storage/*"],
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext", "ES2015"],
