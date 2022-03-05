@@ -172,9 +172,11 @@ const React: ReactType = (function () {
     _this.states = [];
     if (_this.componentUnmount) {
       _this.componentUnmount();
+      _this.componentUnmount = undefined;
     }
     if (_this.injected.unmount) {
       _this.injected.unmount();
+      _this.injected.unmount = undefined;
     }
     reactRenderer();
   }
