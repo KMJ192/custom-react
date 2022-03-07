@@ -1,4 +1,4 @@
-import { useDocument, useDispatch, useSelector } from '@react';
+import { useDocument, useDispatch, useSelector, useState } from '@react';
 import { useRedirection } from '@router';
 import { COUNT_REDUX_TYPE, increase, decrease } from '@src/store/count';
 import {
@@ -58,7 +58,7 @@ function MainPage() {
   //     },
   //   },
   // ];
-  // const [count, setCount] = useState(0);
+  const [stateCount, setStateCount] = useState(0);
 
   const dispatch = useDispatch(COUNT_REDUX_TYPE);
   const dispatch2 = useDispatch(COUNT2_REDUX_TYPE);
@@ -115,6 +115,24 @@ function MainPage() {
       }
     }
 
+    const onStateCountIncrease = () => {
+      setStateCount(stateCount + 1);
+    };
+
+    const onStateCountDecrease = () => {
+      setStateCount(stateCount - 1);
+    };
+    const stateIncreaseBtn = document.getElementById('increase-state');
+    const stateDecreaseBtn = document.getElementById('decrease-state');
+
+    if (stateIncreaseBtn) {
+      stateIncreaseBtn.addEventListener('click', onStateCountIncrease);
+    }
+
+    if (stateDecreaseBtn) {
+      stateDecreaseBtn.addEventListener('click', onStateCountDecrease);
+    }
+
     return () => {
       if (inc && dec && inc2 && dec2 && asyncBtn) {
         inc.removeEventListener('click', increament);
@@ -131,11 +149,14 @@ function MainPage() {
   return `
     <div>${state.count.count}</div>
     <div>${state.count2.count}</div>
+    <div>${stateCount}</div>
     <p id='loading' class='${cx('loading')}'></p>
     <button id='increase'>증가</button>
     <button id='decrease'>감소</button>
     <button id='increase2'>증가2</button>
     <button id='decrease2'>감소2</button>
+    <button id='increase-state'>state count 증가</button>
+    <button id='decrease-state'>state count 감소</button>
     <button id='async'>비동기 호출</button>
     <button id='move'>이동</button>
   `;
