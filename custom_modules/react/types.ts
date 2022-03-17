@@ -6,7 +6,7 @@ interface ReactType {
     initState?: T,
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
-  useDocument(event: () => void): void;
+  useDocument(event: () => void): any;
   useStateNoRender<T>(initState: T): [T, (newVal: T) => void];
   useStateNoRender<T = undefined>(
     initState?: T,
@@ -22,8 +22,8 @@ interface ReactClosureOptions {
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
   componentUnmount?: () => void;
   injected: {
-    event: () => any;
-    unmount?: () => void;
+    event: (() => any)[];
+    unmount?: (() => any)[];
   };
   store?: any;
   reduxState?: { [key: string]: any };

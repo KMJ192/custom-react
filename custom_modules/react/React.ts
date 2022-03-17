@@ -24,8 +24,8 @@ const React: ReactType = (function () {
     componentUnmount: undefined,
     // dom api를 사용하는 공간
     injected: {
-      event: () => {},
-      unmount: undefined,
+      event: [],
+      unmount: [],
     },
     // redux store
     store: undefined,
@@ -44,7 +44,13 @@ const React: ReactType = (function () {
     root.innerHTML = '';
     createDOM(root as HTMLElement, vDOM);
     _this.stateKey = 0;
-    _this.injected.unmount = _this.injected.event();
+    _this.injected.event.forEach((event: () => void) => {
+      const unmount = event();
+      if (unmount !== undefined) {
+        _this.injected.unmount?.push(unmount);
+      }
+    });
+    _this.injected.event = [];
   });
 
   /**
@@ -114,7 +120,7 @@ const React: ReactType = (function () {
    * @param event
    */
   function useDocument(event: () => any) {
-    _this.injected.event = event;
+    _this.injected.event.push(event);
   }
 
   /**
@@ -174,9 +180,12 @@ const React: ReactType = (function () {
       _this.componentUnmount();
       _this.componentUnmount = undefined;
     }
+
     if (_this.injected.unmount) {
-      _this.injected.unmount();
-      _this.injected.unmount = undefined;
+      _this.injected.unmount.forEach((unmount) => {
+        unmount();
+      });
+      _this.injected.unmount = [];
     }
     reactRenderer();
   }
