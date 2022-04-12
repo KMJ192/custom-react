@@ -14,7 +14,3 @@ React.render(
   },
   document.getElementById('App'),
 );
-
-window.addEventListener('popstate', () => {
-  React.routeRender();
-});
