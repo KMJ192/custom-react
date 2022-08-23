@@ -7,10 +7,10 @@ interface ReactType {
   ): [T | undefined, (newVal: T | undefined) => void];
   useEffect(effect: () => any, deps?: readonly any[]): void;
   useDocument(event: () => void): any;
-  useStateNoRender<T>(initState: T): [T, (newVal: T) => void];
+  useStateNoRender<T>(initState: T): [() => T, (newVal: T) => void];
   useStateNoRender<T = undefined>(
     initState?: T,
-  ): [T | undefined, (newVal: T | undefined) => void];
+  ): [() => T | undefined, (newVal: T | undefined) => void];
   useDispatch: (type: string) => void;
   useSelector: (selector: (state: Reducers) => any) => any;
 }

@@ -80,16 +80,21 @@ const React: ReactType = (function () {
    */
   function useStateNoRender<T = undefined>(
     initState: T,
-  ): [T, (newVal: T) => void] {
+  ): [() => T, (newVal: T) => void] {
     const { states, stateKey: key } = _this;
     if (states.length === key) states.push(initState);
-    const state = states[key];
+    const s = states[key];
     const setState = (newState: T) => {
-      if (newState === state) return;
-      if (JSON.stringify(newState) === JSON.stringify(state)) return;
+      if (newState === s) return;
+      if (JSON.stringify(newState) === JSON.stringify(s)) return;
 
       states[key] = newState;
     };
+
+    const state = () => {
+      return states[key];
+    };
+
     _this.stateKey += 1;
     return [state, setState];
   }
