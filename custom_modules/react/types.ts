@@ -19,6 +19,7 @@ interface ReactClosureOptions {
   root: Element | null;
   stateKey: number;
   states: any[];
+  isRender: boolean;
   component?: (() => ReactDOM[]) | (() => ReactDOM) | null;
   componentUnmount?: () => void;
   injected: {

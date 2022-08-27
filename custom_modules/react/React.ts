@@ -31,6 +31,8 @@ const React: ReactType = (function () {
     store: undefined,
     // redux state
     reduxState: undefined,
+
+    isRender: false,
   };
 
   /**
@@ -83,10 +85,10 @@ const React: ReactType = (function () {
   ): [() => T, (newVal: T) => void] {
     const { states, stateKey: key } = _this;
     if (states.length === key) states.push(initState);
-    const s = states[key];
+    const st = states[key];
     const setState = (newState: T) => {
-      if (newState === s) return;
-      if (JSON.stringify(newState) === JSON.stringify(s)) return;
+      if (newState === st) return;
+      if (JSON.stringify(newState) === JSON.stringify(st)) return;
 
       states[key] = newState;
     };
@@ -96,6 +98,7 @@ const React: ReactType = (function () {
     };
 
     _this.stateKey += 1;
+
     return [state, setState];
   }
 
@@ -106,6 +109,12 @@ const React: ReactType = (function () {
    */
   function useEffect(effect: () => any, depsArray?: any[]) {
     const { states, stateKey: currStateKey } = _this;
+
+    if (!_this.isRender) {
+      routeRenderer();
+      _this.isRender = true;
+      return;
+    }
 
     // 실제로 React는 Deps배열이 없으면 callback함수를 실행시킨다.
     const hasNoDeps = !depsArray;
@@ -181,7 +190,9 @@ const React: ReactType = (function () {
    */
   function routeRenderer() {
     _this.states = [];
-    if (_this.componentUnmount) {
+    _this.isRender = false;
+
+    if (typeof _this.componentUnmount === 'function') {
       _this.componentUnmount();
       _this.componentUnmount = undefined;
     }
